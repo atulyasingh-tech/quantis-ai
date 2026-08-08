@@ -39,10 +39,7 @@ DASHBOARD_HTML = """
         .card-img { width: 100%; height: 180px; object-fit: cover; background: #0f172a; }
         .card-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
         .card-title { font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin-bottom: 10px; line-height: 1.4; }
-        .card-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 16px; flex: 1; }
-        .card-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
-        .tag { background: #0f172a; border: 1px solid #334155; color: #38bdf8; font-size: 0.75rem; padding: 4px 10px; border-radius: 6px; font-weight: 600; }
-        .tag-green { color: #34d399; border-color: #065f46; }
+        .card-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; flex: 1; }
     </style>
 </head>
 <body>
@@ -92,7 +89,6 @@ DASHBOARD_HTML = """
 
                 feedGrid.innerHTML = '';
                 data.feed.forEach(post => {
-                    // Extract image URL from second source entry or default fallback
                     const imgUrl = (post.sources && post.sources.length > 1) 
                         ? post.sources[1] 
                         : `https://image.pollinations.ai/prompt/ai%20technology%20research?width=800&height=400&nologo=true`;
@@ -104,10 +100,6 @@ DASHBOARD_HTML = """
                         <div class="card-body">
                             <div class="card-title">${post.title || 'Frontier AI Insight'}</div>
                             <div class="card-text">${post.text}</div>
-                            <div class="card-meta">
-                                <span class="tag tag-green">Score: ${(post.confidenceScore * 100).toFixed(0)}%</span>
-                                <span class="tag">Autonomous Analysis</span>
-                            </div>
                         </div>
                     `;
                     feedGrid.appendChild(card);
@@ -118,7 +110,6 @@ DASHBOARD_HTML = """
             }
         }
 
-        // Auto load on page view
         loadFeed();
     </script>
 </body>
