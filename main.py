@@ -23,23 +23,104 @@ DASHBOARD_HTML = """
     <title>Quantis AI - Autonomous Frontier Analyst</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: #0b0f19; color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 30px 20px; }
-        .hero { text-align: center; margin-bottom: 30px; max-width: 700px; }
-        .hero h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
-        .hero p { color: #94a3b8; font-size: 1rem; }
-        .controls { display: flex; gap: 12px; margin-bottom: 24px; }
-        button { background: #2563eb; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-        button:hover { transform: translateY(-2px); background: #1d4ed8; }
-        .btn-green { background: #10b981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
-        .btn-green:hover { background: #059669; }
-        .status-badge { background: #1e293b; border: 1px solid #334155; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; color: #38bdf8; margin-bottom: 24px; }
-        .feed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; width: 100%; max-width: 1100px; }
-        .card { background: #161e2e; border: 1px solid #243044; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; }
-        .card:hover { transform: translateY(-4px); border-color: #38bdf8; }
-        .card-img { width: 100%; height: 180px; object-fit: cover; background: #0f172a; }
-        .card-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
-        .card-title { font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin-bottom: 10px; line-height: 1.4; }
-        .card-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; flex: 1; }
+        
+        body { 
+            /* High-tech HUD background setup */
+            background: #020617 url('https://raw.githubusercontent.com/atulyasingh-tech/quantis-ai/main/quantisbg.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            color: #f1f5f9; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 40px 20px; 
+        }
+
+        .hero { text-align: center; margin-bottom: 25px; max-width: 700px; }
+        .hero h1 { 
+            font-size: 2.8rem; 
+            font-weight: 800; 
+            background: linear-gradient(90deg, #00f2fe, #4facfe); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+            margin-bottom: 6px; 
+            letter-spacing: 1px;
+        }
+        .hero p { color: #38bdf8; font-size: 0.95rem; font-weight: 500; letter-spacing: 0.5px; }
+
+        .controls { display: flex; gap: 14px; margin-bottom: 20px; }
+        button { 
+            background: rgba(14, 165, 233, 0.2); 
+            color: #38bdf8; 
+            border: 1px solid #0284c7; 
+            padding: 10px 22px; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.25s ease; 
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.3);
+        }
+        button:hover { 
+            background: rgba(14, 165, 233, 0.4); 
+            border-color: #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            transform: translateY(-2px);
+        }
+        .btn-green { 
+            background: rgba(16, 185, 129, 0.2); 
+            color: #34d399; 
+            border-color: #059669; 
+            box-shadow: 0 0 10px rgba(5, 150, 105, 0.3);
+        }
+        .btn-green:hover { 
+            background: rgba(16, 185, 129, 0.4); 
+            border-color: #34d399;
+            box-shadow: 0 0 15px rgba(52, 211, 153, 0.6);
+        }
+
+        .status-badge { 
+            background: rgba(15, 23, 42, 0.6); 
+            border: 1px solid rgba(56, 189, 248, 0.3); 
+            padding: 6px 18px; 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+            color: #38bdf8; 
+            margin-bottom: 30px; 
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        .feed-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 24px; 
+            width: 100%; 
+            max-width: 1100px; 
+        }
+
+        /* Sci-Fi Glassmorphism Card Style */
+        .card { 
+            background: rgba(10, 20, 40, 0.65); 
+            border: 1px solid rgba(56, 189, 248, 0.25); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            transition: all 0.3s ease; 
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+        .card:hover { 
+            transform: translateY(-4px); 
+            border-color: #38bdf8; 
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+        .card-img { width: 100%; height: 180px; object-fit: cover; background: #020617; border-bottom: 1px solid rgba(56, 189, 248, 0.15); }
+        .card-body { padding: 18px; display: flex; flex-direction: column; flex: 1; }
+        .card-title { font-size: 1.1rem; font-weight: 700; color: #f8fafc; margin-bottom: 10px; line-height: 1.4; }
+        .card-text { font-size: 0.88rem; color: #94a3b8; line-height: 1.6; flex: 1; }
     </style>
 </head>
 <body>
@@ -56,7 +137,7 @@ DASHBOARD_HTML = """
     <div class="status-badge" id="status">System Online & Ready</div>
 
     <div class="feed-grid" id="feed">
-        <div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 40px;">
+        <div style="grid-column: 1/-1; text-align: center; color: #38bdf8; padding: 40px;">
             Click 'Trigger Discovery' to initiate real-time autonomous analysis.
         </div>
     </div>
@@ -82,7 +163,7 @@ DASHBOARD_HTML = """
                 const feedGrid = document.getElementById('feed');
                 
                 if (data.feed.length === 0) {
-                    feedGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 40px;">No posts found. Trigger discovery loop above.</div>';
+                    feedGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 40px;">No posts found. Trigger discovery loop above.</div>';
                     document.getElementById('status').innerText = "Feed empty.";
                     return;
                 }
