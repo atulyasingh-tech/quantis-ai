@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime
@@ -15,13 +15,15 @@ async def get_db():
         yield session
 
 @router.post("/init")
-async def initialize_agent():
+async def initialize_agent(background_tasks: BackgroundTasks):
     start_scheduler()
-    # Trigger an initial discovery pass upon initialization
-    await quantis_agent.run_autonomous_loop()
+    
+    # Run loop asynchronously in background to prevent request timeout
+    background_tasks.add_task(quantis_agent.run_autonomous_loop)
+    
     return {
         "status": "active",
-        "message": "Quantis AI Frontier Analyst initialized successfully.",
+        "message": "Quantis AI initialized successfully. Background task running.",
         "initializedAt": datetime.utcnow().isoformat()
     }
 
@@ -36,6 +38,7 @@ async def get_feed(db: AsyncSession = Depends(get_db)):
             {
                 "id": p.id,
                 "createdAt": p.created_at.isoformat(),
+                "title": p.title,
                 "text": p.text,
                 "rationale": p.rationale,
                 "sources": p.sources,
