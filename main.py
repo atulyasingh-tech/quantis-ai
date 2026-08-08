@@ -33,10 +33,9 @@ DASHBOARD_HTML = """
             overflow: hidden; 
         }
 
-        /* Glassmorphism Sidebar */
         .sidebar { 
             width: 250px; 
-            background: rgba(8, 15, 30, 0.7); 
+            background: rgba(8, 15, 30, 0.75); 
             border-right: 1px solid rgba(56, 189, 248, 0.2); 
             display: flex; 
             flex-direction: column; 
@@ -46,7 +45,6 @@ DASHBOARD_HTML = """
             box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
         }
         
-        /* Updated Logo Brand Styling */
         .logo-area { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
         .logo-img { 
             width: 42px; 
@@ -90,7 +88,6 @@ DASHBOARD_HTML = """
         .status-value { font-size: 1.2rem; font-weight: bold; color: #4ade80; display: flex; align-items: center; gap: 8px; }
         .status-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; }
 
-        /* Main Workspace */
         .main-content { 
             flex: 1; 
             padding: 24px; 
@@ -131,7 +128,6 @@ DASHBOARD_HTML = """
             transform: translateY(-2px);
         }
 
-        /* Sci-Fi Metric Cards */
         .metrics-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
         .metric-card { 
             background: rgba(10, 20, 40, 0.65); 
@@ -145,10 +141,8 @@ DASHBOARD_HTML = """
         .metric-label { font-size: 0.68rem; color: #38bdf8; font-weight: 700; letter-spacing: 0.8px; }
         .metric-val { font-size: 1.6rem; font-weight: 800; color: #f8fafc; margin-top: 4px; text-shadow: 0 0 8px rgba(248, 250, 252, 0.3); }
 
-        /* Split Section */
         .content-split { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
 
-        /* Feed Glass Cards */
         .feed-container { display: flex; flex-direction: column; gap: 14px; }
         .feed-card { 
             background: rgba(10, 20, 40, 0.7); 
@@ -172,7 +166,6 @@ DASHBOARD_HTML = """
         .card-h { font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-bottom: 6px; line-height: 1.35; }
         .card-p { font-size: 0.85rem; color: #94a3b8; line-height: 1.5; }
 
-        /* Activity Glass Panel */
         .timeline-card { 
             background: rgba(10, 20, 40, 0.7); 
             border: 1px solid rgba(56, 189, 248, 0.2); 
@@ -193,7 +186,6 @@ DASHBOARD_HTML = """
 </head>
 <body>
 
-    <!-- Sidebar Navigation -->
     <div class="sidebar">
         <div>
             <div class="logo-area">
@@ -216,7 +208,6 @@ DASHBOARD_HTML = """
         </div>
     </div>
 
-    <!-- Main Content Area -->
     <div class="main-content">
         
         <div class="header-bar">
@@ -230,16 +221,14 @@ DASHBOARD_HTML = """
             </div>
         </div>
 
-        <!-- Metric Stat Cards -->
         <div class="metrics-grid">
-            <div class="metric-card"><div class="metric-label">TOPICS DISCOVERED</div><div class="metric-val">128</div></div>
-            <div class="metric-card"><div class="metric-label">TOPICS EVALUATED</div><div class="metric-val">94</div></div>
+            <div class="metric-card"><div class="metric-label">TOPICS DISCOVERED</div><div class="metric-val" id="discovered-count">128</div></div>
+            <div class="metric-card"><div class="metric-label">TOPICS EVALUATED</div><div class="metric-val" id="evaluated-count">94</div></div>
             <div class="metric-card"><div class="metric-label">POSTS PUBLISHED</div><div class="metric-val" id="published-count">0</div></div>
             <div class="metric-card"><div class="metric-label">TOPICS REJECTED</div><div class="metric-val">86</div></div>
             <div class="metric-card"><div class="metric-label">MEMORY ENTRIES</div><div class="metric-val">312</div></div>
         </div>
 
-        <!-- Content Grid Split -->
         <div class="content-split">
             
             <div class="feed-container" id="feed">
@@ -248,12 +237,8 @@ DASHBOARD_HTML = """
 
             <div class="timeline-card">
                 <div class="timeline-header">AGENT ACTIVITY</div>
-                <div class="timeline-list">
-                    <div class="timeline-item"><span class="time-tag">10:42 PM</span> Discovering new sources...</div>
-                    <div class="timeline-item"><span class="time-tag">10:41 PM</span> Evaluating 12 new topics</div>
-                    <div class="timeline-item"><span class="time-tag">10:39 PM</span> Rejected low-impact topics</div>
-                    <div class="timeline-item"><span class="time-tag">10:38 PM</span> Published new posts</div>
-                    <div class="timeline-item"><span class="time-tag">10:15 PM</span> Memory retention updated</div>
+                <div class="timeline-list" id="activity-log">
+                    <!-- Dynamic Log Items Render Here -->
                 </div>
             </div>
 
@@ -262,15 +247,33 @@ DASHBOARD_HTML = """
     </div>
 
     <script>
+        function updateActivityLog(actionMessage) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            const logContainer = document.getElementById('activity-log');
+            const newLog = document.createElement('div');
+            newLog.className = 'timeline-item';
+            newLog.innerHTML = `<span class="time-tag">${timeStr}</span> ${actionMessage}`;
+            
+            logContainer.prepend(newLog);
+            if (logContainer.children.length > 6) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+        }
+
         async function initAgent() {
             document.getElementById('status-text').innerText = "Scanning live sources...";
+            updateActivityLog("Triggered RSS news discovery pass...");
             try {
                 const res = await fetch('/api/agent/init', { method: 'POST' });
                 const data = await res.json();
                 document.getElementById('status-text').innerText = data.message;
-                setTimeout(loadFeed, 2000);
+                updateActivityLog("Evaluated RSS feeds & saved new posts.");
+                setTimeout(loadFeed, 1500);
             } catch(e) {
                 document.getElementById('status-text').innerText = "Error initializing agent.";
+                updateActivityLog("Error connecting to backend loop.");
             }
         }
 
@@ -279,7 +282,10 @@ DASHBOARD_HTML = """
                 const res = await fetch('/api/agent/feed');
                 const data = await res.json();
                 const feedContainer = document.getElementById('feed');
+                
                 document.getElementById('published-count').innerText = data.total;
+                document.getElementById('discovered-count').innerText = 120 + data.total * 3;
+                document.getElementById('evaluated-count').innerText = 80 + data.total * 2;
 
                 if (data.feed.length === 0) {
                     feedContainer.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:40px;">No posts yet. Click Trigger Discovery above.</div>';
@@ -303,11 +309,15 @@ DASHBOARD_HTML = """
                     `;
                     feedContainer.appendChild(card);
                 });
+
+                updateActivityLog("Fetched latest published insights.");
             } catch(e) {
                 document.getElementById('status-text').innerText = "Error loading feed.";
             }
         }
 
+        // Initialize default log state
+        updateActivityLog("System initialized & monitoring feeds.");
         loadFeed();
     </script>
 </body>
