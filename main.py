@@ -25,7 +25,6 @@ DASHBOARD_HTML = """
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         
         body { 
-            /* HUD Background Overlay */
             background: #020617 url('https://raw.githubusercontent.com/atulyasingh-tech/quantis-ai/main/quantisbg.jpeg') no-repeat center center fixed;
             background-size: cover;
             color: #f1f5f9; 
@@ -46,19 +45,16 @@ DASHBOARD_HTML = """
             backdrop-filter: blur(12px);
             box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
         }
+        
+        /* Updated Logo Brand Styling */
         .logo-area { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
-        .logo-icon { 
-            width: 38px; 
-            height: 38px; 
-            background: rgba(2, 132, 199, 0.3); 
-            border: 1px solid #38bdf8;
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 800; 
-            color: #00f2fe; 
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5); 
+        .logo-img { 
+            width: 42px; 
+            height: 42px; 
+            border-radius: 8px; 
+            object-fit: cover; 
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }
         .logo-text { font-size: 1.25rem; font-weight: 800; letter-spacing: 1.5px; color: #f8fafc; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
         .logo-sub { font-size: 0.65rem; color: #38bdf8; letter-spacing: 1.5px; font-weight: 600; }
@@ -94,7 +90,7 @@ DASHBOARD_HTML = """
         .status-value { font-size: 1.2rem; font-weight: bold; color: #4ade80; display: flex; align-items: center; gap: 8px; }
         .status-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; }
 
-        /* Main Glass Workspace */
+        /* Main Workspace */
         .main-content { 
             flex: 1; 
             padding: 24px; 
@@ -149,7 +145,7 @@ DASHBOARD_HTML = """
         .metric-label { font-size: 0.68rem; color: #38bdf8; font-weight: 700; letter-spacing: 0.8px; }
         .metric-val { font-size: 1.6rem; font-weight: 800; color: #f8fafc; margin-top: 4px; text-shadow: 0 0 8px rgba(248, 250, 252, 0.3); }
 
-        /* Split Section: Feed + Activity */
+        /* Split Section */
         .content-split { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
 
         /* Feed Glass Cards */
@@ -189,7 +185,6 @@ DASHBOARD_HTML = """
         .timeline-item { font-size: 0.82rem; color: #cbd5e1; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; }
         .time-tag { color: #00f2fe; font-weight: 600; font-family: monospace; }
 
-        /* Custom Cyan Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(2, 6, 23, 0.5); }
         ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 3px; }
@@ -202,7 +197,7 @@ DASHBOARD_HTML = """
     <div class="sidebar">
         <div>
             <div class="logo-area">
-                <div class="logo-icon">Q</div>
+                <img class="logo-img" src="https://raw.githubusercontent.com/atulyasingh-tech/quantis-ai/main/quantislogo.jpeg" alt="Quantis Logo" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100'">
                 <div>
                     <div class="logo-text">QUANTIS</div>
                     <div class="logo-sub">AI FRONTIER ANALYST</div>
@@ -247,12 +242,10 @@ DASHBOARD_HTML = """
         <!-- Content Grid Split -->
         <div class="content-split">
             
-            <!-- Published Feed Column -->
             <div class="feed-container" id="feed">
                 <div style="color: #38bdf8; text-align: center; padding: 40px;">Loading posts...</div>
             </div>
 
-            <!-- Activity Log Column -->
             <div class="timeline-card">
                 <div class="timeline-header">AGENT ACTIVITY</div>
                 <div class="timeline-list">
