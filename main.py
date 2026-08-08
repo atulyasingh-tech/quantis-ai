@@ -1,8 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
-from typing import Annotated
+from pydantic import BaseModel
 
 app = FastAPI(title="Quantis AI Backend")
+
+# Request schema for chat requests
+class ChatRequest(BaseModel):
+    message: str
 
 # HTML/JS Chat Interface rendered directly on the root URL
 CHAT_HTML = """
@@ -49,15 +53,20 @@ CHAT_HTML = """
             const text = userInput.value.trim();
             if (!text) return;
 
-            // Add user message to screen
+            // Display user message in chat UI
             addMessage(text, 'user-message');
             userInput.value = '';
 
             try {
-                // Call status endpoint as placeholder (or swap with your active chat route)
-                const res = await fetch('/api/agent/status');
+                // Send query to the backend agent chat endpoint
+                const res = await fetch('/api/agent/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+                
                 const data = await res.json();
-                addMessage(data.message || 'Agent processed your query.', 'agent-message');
+                addMessage(data.response || 'Agent processed your query.', 'agent-message');
             } catch (err) {
                 addMessage('Error connecting to backend.', 'agent-message');
             }
@@ -82,4 +91,15 @@ def root():
 
 @app.get("/api/agent/status")
 def get_status():
+    """Endpoint for checking API status."""
     return {"status": "online", "message": "Quantis AI Backend is running smoothly"}
+
+@app.post("/api/agent/chat")
+def chat_with_agent(req: ChatRequest):
+    """Chat endpoint that receives user input and generates AI responses."""
+    user_msg = req.message
+    
+    # Place your actual agent call / logic here
+    reply = f"Quantis AI received: '{user_msg}'"
+    
+    return {"response": reply}
