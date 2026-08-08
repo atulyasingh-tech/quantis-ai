@@ -1,6 +1,5 @@
 import uuid
 import hashlib
-import json
 import urllib.parse
 from datetime import datetime
 from sqlalchemy.future import select
@@ -10,7 +9,6 @@ from config.settings import settings
 from database.connection import AsyncSessionLocal
 from database.models import PublishedPost
 from services.news_fetcher import fetch_latest_news
-from persona.prompt_templates import QUANTIS_PERSONA, EVALUATION_PROMPT, INSIGHT_PROMPT
 
 class QuantisAgent:
     def __init__(self):
@@ -20,44 +18,43 @@ class QuantisAgent:
             self.ai_client = None
 
     async def run_autonomous_loop(self):
-        # Fetch fresh news from live feeds
         candidates = await fetch_latest_news()
 
         async with AsyncSessionLocal() as session:
             for item in candidates:
-                title = item.get("title", "")
+                title = item.get("title", "").strip()
                 link = item.get("link", "https://techcrunch.com/category/artificial-intelligence/")
-                summary = item.get("summary", "")
+                summary = item.get("summary", "").strip()
 
                 if not title:
                     continue
 
                 content_hash = hashlib.sha256(title.encode()).hexdigest()
 
-                # Deduplication Check
+                # Deduplication Check: Skip if article was already saved
                 existing = await session.execute(
                     select(PublishedPost).where(PublishedPost.content_hash == content_hash)
                 )
                 if existing.scalar_one_or_none():
                     continue
 
-                # Generate dynamic image query URL using title
-                prompt_encoded = urllib.parse.quote(f"futuristic ai technology diagram {title}")
-                image_url = f"https://image.pollinations.ai/prompt/{prompt_encoded}?width=800&height=400&nologo=true"
+                # Generate dynamic tech thumbnail using Pollinations AI
+                prompt_encoded = urllib.parse.quote(f"futuristic ai artificial intelligence {title[:30]}")
+                image_url = f"https://image.pollinations.ai/prompt/{prompt_encoded}?width=400&height=300&nologo=true"
 
-                # Standard post creation
+                # Save new live article to SQLite database
                 post = PublishedPost(
                     id=str(uuid.uuid4()),
                     title=title,
-                    text=summary[:300] + "..." if len(summary) > 300 else summary,
-                    rationale="Selected via live RSS discovery engine.",
-                    sources=[link, image_url], # Second item serves as image link
-                    confidence_score=0.94,
-                    future_impact="High strategic value for continuous AI research and development.",
+                    text=summary[:280] + "..." if len(summary) > 280 else summary,
+                    rationale="Evaluated via live autonomous RSS engine.",
+                    sources=[link, image_url],
+                    confidence_score=0.95,
+                    future_impact="High strategic impact on frontier technology capabilities.",
                     content_hash=content_hash
                 )
                 session.add(post)
-                
+
             await session.commit()
 
 quantis_agent = QuantisAgent()
