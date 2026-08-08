@@ -1,3 +1,7 @@
+from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
+from typing import Annotated
+
 class Doc:
     """Define the documentation of a type annotation using `Annotated`, to be
         used in class attributes, function and method parameters, return values,
@@ -34,3 +38,17 @@ class Doc:
         if not isinstance(other, Doc):
             return NotImplemented
         return self.documentation == other.documentation
+
+
+app = FastAPI(title="Quantis AI Backend")
+
+
+@app.get("/")
+def root():
+    """Redirects the root URL directly to the interactive Swagger API documentation."""
+    return RedirectResponse(url="/docs")
+
+
+@app.get("/api/agent/status")
+def get_status():
+    return {"status": "online", "message": "Quantis AI Backend is running smoothly"}
