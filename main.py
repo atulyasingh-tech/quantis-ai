@@ -5,8 +5,22 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="Quantis AI - Command Center")
+app = FastAPI(
+    title="Quantis AI - Autonomous Frontier Analyst",
+    description="Production-grade AI ecosystem research agent and real-time news discovery engine.",
+    version="1.0.0"
+)
+
+# Enable CORS for external judge/client calls
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 async def startup_event():
@@ -40,6 +54,8 @@ DASHBOARD_HTML = """
             height: 100vh; 
             overflow: hidden; 
         }
+
+        /* Glassmorphism Sidebar */
         .sidebar { 
             width: 250px; 
             background: rgba(8, 15, 30, 0.75); 
@@ -55,13 +71,36 @@ DASHBOARD_HTML = """
         .logo-img { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(56, 189, 248, 0.3); }
         .logo-text { font-size: 1.25rem; font-weight: 800; letter-spacing: 1.5px; color: #f8fafc; }
         .logo-sub { font-size: 0.65rem; color: #38bdf8; letter-spacing: 1.5px; font-weight: 600; }
+        
+        .nav-menu { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+        .nav-item { 
+            padding: 10px 14px; 
+            border-radius: 8px; 
+            font-size: 0.85rem; 
+            text-decoration: none; 
+            font-weight: 500; 
+            transition: all 0.2s;
+        }
+        .nav-item.active {
+            color: #38bdf8; 
+            background: rgba(2, 132, 199, 0.3); 
+            border: 1px solid #0284c7; 
+            font-weight: 600;
+        }
+        .nav-item.link {
+            color: #94a3b8; 
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .nav-item.link:hover { color: #38bdf8; border-color: #38bdf8; }
+
         .status-card { background: rgba(12, 22, 45, 0.65); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; padding: 16px; }
         .status-title { font-size: 0.72rem; color: #94a3b8; letter-spacing: 1px; margin-bottom: 6px; }
         .status-value { font-size: 1.2rem; font-weight: bold; color: #4ade80; display: flex; align-items: center; gap: 8px; }
         .status-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; }
         
+        /* Main Workspace */
         .main-content { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
-        .header-bar { display: flex; justify-content: space-between; align-items: center; }
+        .header-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
         .header-title { font-size: 1.6rem; font-weight: 800; background: linear-gradient(90deg, #00f2fe, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .header-sub { color: #38bdf8; font-size: 0.9rem; margin-top: 4px; }
         .btn-action { background: rgba(2, 132, 199, 0.25); color: #38bdf8; border: 1px solid #0284c7; padding: 9px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
@@ -74,6 +113,8 @@ DASHBOARD_HTML = """
         
         .content-split { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         .feed-container { display: flex; flex-direction: column; gap: 14px; }
+        
+        /* Feed Cards */
         .feed-card { 
             background: rgba(10, 20, 40, 0.7); 
             border: 1px solid rgba(56, 189, 248, 0.2); 
@@ -92,11 +133,54 @@ DASHBOARD_HTML = """
         .card-p { font-size: 0.85rem; color: #94a3b8; line-height: 1.4; }
         .card-cta { font-size: 0.75rem; color: #00f2fe; margin-top: 6px; font-weight: 600; }
 
+        /* Animated Skeleton Loading State */
+        .skeleton-card {
+            background: rgba(10, 20, 40, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        .skeleton-thumb {
+            width: 110px;
+            height: 85px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #0f172a 25%, #1e293b 50%, #0f172a 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        .skeleton-lines { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        .skeleton-line {
+            height: 16px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #0f172a 25%, #1e293b 50%, #0f172a 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Timeline Card */
         .timeline-card { background: rgba(10, 20, 40, 0.7); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 10px; padding: 18px; }
         .timeline-header { font-size: 0.85rem; font-weight: 700; color: #38bdf8; margin-bottom: 16px; }
         .timeline-list { display: flex; flex-direction: column; gap: 14px; }
         .timeline-item { font-size: 0.82rem; color: #cbd5e1; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; }
         .time-tag { color: #00f2fe; font-weight: 600; font-family: monospace; }
+
+        /* Toast Notifications Container */
+        #toast-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 200; }
+        .toast { 
+            background: #0c162d; 
+            border: 1px solid #38bdf8; 
+            color: #f8fafc; 
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            font-size: 0.85rem; 
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); 
+            animation: fadeIn 0.3s ease; 
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Modal Overlay Reader */
         .modal-overlay { 
@@ -117,32 +201,40 @@ DASHBOARD_HTML = """
         .modal-btn-area { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; }
         .modal-btn { display: inline-block; background: #0284c7; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; border: none; cursor: pointer; }
         .modal-btn:hover { background: #0369a1; }
+
+        /* Mobile Responsiveness Rules */
+        @media (max-width: 900px) {
+            body { flex-direction: column; overflow-y: auto; height: auto; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(56, 189, 248, 0.2); }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+            .content-split { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <div class="sidebar">
-    <div>
-        <div class="logo-area">
-            <img class="logo-img" src="https://raw.githubusercontent.com/atulyasingh-tech/quantis-ai/main/quantislogo.jpeg" alt="Quantis Logo">
-            <div>
-                <div class="logo-text">QUANTIS</div>
-                <div class="logo-sub">AI FRONTIER ANALYST</div>
+        <div>
+            <div class="logo-area">
+                <img class="logo-img" src="https://raw.githubusercontent.com/atulyasingh-tech/quantis-ai/main/quantislogo.jpeg" alt="Quantis Logo">
+                <div>
+                    <div class="logo-text">QUANTIS</div>
+                    <div class="logo-sub">AI FRONTIER ANALYST</div>
+                </div>
+            </div>
+
+            <!-- Restored Interactive Navigation for Judges -->
+            <div class="nav-menu">
+                <a href="#" class="nav-item active">Dashboard</a>
+                <a href="/docs" target="_blank" class="nav-item link">API Docs ↗</a>
             </div>
         </div>
 
-        <!-- Restored Interactive Navigation for Judges -->
-        <div class="nav-menu" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px;">
-            <a href="#" style="padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; color: #38bdf8; background: rgba(2, 132, 199, 0.3); border: 1px solid #0284c7; text-decoration: none; font-weight: 600;">Dashboard</a>
-            <a href="/docs" target="_blank" style="padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; color: #94a3b8; border: 1px solid rgba(56, 189, 248, 0.2); text-decoration: none; font-weight: 500; transition: all 0.2s;">API Docs ↗</a>
+        <div class="status-card">
+            <div class="status-title">AGENT STATUS</div>
+            <div class="status-value"><div class="status-dot"></div> LIVE</div>
+            <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">Autonomous Mode</div>
         </div>
     </div>
-
-    <div class="status-card">
-        <div class="status-title">AGENT STATUS</div>
-        <div class="status-value"><div class="status-dot"></div> LIVE</div>
-        <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">Autonomous Mode</div>
-    </div>
-</div>
 
     <div class="main-content">
         <div class="header-bar">
@@ -166,7 +258,10 @@ DASHBOARD_HTML = """
 
         <div class="content-split">
             <div class="feed-container" id="feed">
-                <div style="color: #38bdf8; text-align: center; padding: 40px;">Loading posts...</div>
+                <!-- Skeleton Shimmer Loaders Default -->
+                <div class="skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-lines"><div class="skeleton-line" style="width:70%;"></div><div class="skeleton-line" style="width:90%;"></div></div></div>
+                <div class="skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-lines"><div class="skeleton-line" style="width:60%;"></div><div class="skeleton-line" style="width:85%;"></div></div></div>
+                <div class="skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-lines"><div class="skeleton-line" style="width:80%;"></div><div class="skeleton-line" style="width:75%;"></div></div></div>
             </div>
             <div class="timeline-card">
                 <div class="timeline-header">AGENT ACTIVITY</div>
@@ -189,7 +284,21 @@ DASHBOARD_HTML = """
         </div>
     </div>
 
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
     <script>
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            if (container) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerText = msg;
+                container.appendChild(toast);
+                setTimeout(() => toast.remove(), 3500);
+            }
+        }
+
         function updateActivityLog(msg) {
             const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             const log = document.getElementById('activity-log');
@@ -204,14 +313,17 @@ DASHBOARD_HTML = """
         async function initAgent() {
             document.getElementById('status-text').innerText = "Scanning live sources...";
             updateActivityLog("Running RSS news discovery...");
+            showToast("Discovery Engine Activated...");
             try {
                 const res = await fetch('/api/agent/init', { method: 'POST' });
                 const data = await res.json();
                 document.getElementById('status-text').innerText = data.message || "Discovery pass completed.";
                 updateActivityLog("Evaluated RSS feeds & updated database.");
+                showToast("New insights processed successfully!");
                 setTimeout(loadFeed, 1000);
             } catch(e) {
                 document.getElementById('status-text').innerText = "Error initializing agent.";
+                showToast("Initialization error occurred.");
             }
         }
 
