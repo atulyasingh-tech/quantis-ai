@@ -8,21 +8,19 @@ from fastapi.responses import HTMLResponse
 
 app = FastAPI(title="Quantis AI - Autonomous Frontier Analyst")
 
-# Safe startup handler
 @app.on_event("startup")
 async def startup_event():
     try:
         from database.connection import init_db
         await init_db()
     except Exception as e:
-        print(f"Database init bypassed: {e}")
+        print(f"Startup init bypassed: {e}")
 
-# Try importing routes safely
 try:
     from api.routes import router
     app.include_router(router)
 except Exception as e:
-    print(f"Router import failed: {e}")
+    print(f"Router import bypassed: {e}")
 
 DASHBOARD_HTML = """
 <!DOCTYPE html>
@@ -150,9 +148,9 @@ DASHBOARD_HTML = """
             try {
                 const res = await fetch('/api/agent/init', { method: 'POST' });
                 const data = await res.json();
-                document.getElementById('status-text').innerText = data.message;
+                document.getElementById('status-text').innerText = data.message || "Discovery pass completed.";
                 updateActivityLog("Evaluated RSS feeds & updated database.");
-                setTimeout(loadFeed, 1500);
+                setTimeout(loadFeed, 1000);
             } catch(e) {
                 document.getElementById('status-text').innerText = "Error initializing agent.";
             }
@@ -163,15 +161,17 @@ DASHBOARD_HTML = """
                 const res = await fetch('/api/agent/feed');
                 const data = await res.json();
                 const feed = document.getElementById('feed');
-                document.getElementById('published-count').innerText = data.total;
+                const posts = data.feed || [];
+                
+                document.getElementById('published-count').innerText = data.total ?? posts.length;
 
-                if (!data.feed || data.feed.length === 0) {
+                if (posts.length === 0) {
                     feed.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:40px;">No posts yet. Click Trigger Discovery above.</div>';
                     return;
                 }
 
                 feed.innerHTML = '';
-                data.feed.forEach(post => {
+                posts.forEach(post => {
                     const imgUrl = (post.sources && post.sources.length > 1) ? post.sources[1] : 'https://image.pollinations.ai/prompt/ai%20tech?width=400&height=300';
                     const card = document.createElement('div');
                     card.className = 'feed-card';
@@ -179,7 +179,7 @@ DASHBOARD_HTML = """
                         <img class="card-thumb" src="${imgUrl}" alt="Thumb" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400'">
                         <div class="card-info">
                             <div class="card-h">${post.title || 'AI Frontier Analysis'}</div>
-                            <div class="card-p">${post.text}</div>
+                            <div class="card-p">${post.text || ''}</div>
                         </div>
                     `;
                     feed.appendChild(card);
