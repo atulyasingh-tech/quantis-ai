@@ -17,7 +17,6 @@ async def fetch_latest_news() -> List[Dict[str, str]]:
         "Cache-Control": "no-cache, no-store, must-revalidate"
     }
     
-    # Append timestamp query to prevent Vercel edge caching
     timestamp = int(time.time())
     
     async with httpx.AsyncClient(timeout=6.0, follow_redirects=True, headers=headers) as client:
@@ -27,7 +26,8 @@ async def fetch_latest_news() -> List[Dict[str, str]]:
                 resp = await client.get(cache_busted_feed)
                 if resp.status_code == 200:
                     root = ET.fromstring(resp.text)
-                    for item in root.findall(".//item")[:3]:
+                    # Pull up to 5 items per RSS feed to yield 10+ candidate stories
+                    for item in root.findall(".//item")[:5]:
                         title = item.findtext("title") or ""
                         link = item.findtext("link") or ""
                         desc = item.findtext("description") or ""
