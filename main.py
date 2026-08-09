@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
-app = FastAPI(title="Quantis AI - Autonomous Frontier Analyst")
+app = FastAPI(title="Quantis AI - Command Center")
 
 @app.on_event("startup")
 async def startup_event():
@@ -14,13 +14,13 @@ async def startup_event():
         from database.connection import init_db
         await init_db()
     except Exception as e:
-        print(f"Startup init bypassed: {e}")
+        print(f"Startup database initialization bypassed: {e}")
 
 try:
     from api.routes import router
     app.include_router(router)
 except Exception as e:
-    print(f"Router import bypassed: {e}")
+    print(f"Router loading bypassed: {e}")
 
 DASHBOARD_HTML = """
 <!DOCTYPE html>
@@ -59,28 +59,64 @@ DASHBOARD_HTML = """
         .status-title { font-size: 0.72rem; color: #94a3b8; letter-spacing: 1px; margin-bottom: 6px; }
         .status-value { font-size: 1.2rem; font-weight: bold; color: #4ade80; display: flex; align-items: center; gap: 8px; }
         .status-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; }
+        
         .main-content { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
         .header-bar { display: flex; justify-content: space-between; align-items: center; }
         .header-title { font-size: 1.6rem; font-weight: 800; background: linear-gradient(90deg, #00f2fe, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .header-sub { color: #38bdf8; font-size: 0.9rem; margin-top: 4px; }
-        .btn-action { background: rgba(2, 132, 199, 0.25); color: #38bdf8; border: 1px solid #0284c7; padding: 9px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-        .btn-action:hover { background: rgba(2, 132, 199, 0.5); }
+        .btn-action { background: rgba(2, 132, 199, 0.25); color: #38bdf8; border: 1px solid #0284c7; padding: 9px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-action:hover { background: rgba(2, 132, 199, 0.5); border-color: #38bdf8; }
+        
         .metrics-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
         .metric-card { background: rgba(10, 20, 40, 0.65); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 10px; padding: 14px; }
         .metric-label { font-size: 0.68rem; color: #38bdf8; font-weight: 700; }
         .metric-val { font-size: 1.6rem; font-weight: 800; color: #f8fafc; margin-top: 4px; }
+        
         .content-split { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         .feed-container { display: flex; flex-direction: column; gap: 14px; }
-        .feed-card { background: rgba(10, 20, 40, 0.7); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 10px; padding: 16px; display: flex; gap: 16px; align-items: center; }
+        .feed-card { 
+            background: rgba(10, 20, 40, 0.7); 
+            border: 1px solid rgba(56, 189, 248, 0.2); 
+            border-radius: 10px; 
+            padding: 16px; 
+            display: flex; 
+            gap: 16px; 
+            align-items: center; 
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .feed-card:hover { border-color: #38bdf8; transform: translateY(-2px); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
         .card-thumb { width: 110px; height: 85px; border-radius: 8px; object-fit: cover; background: #020617; }
         .card-info { flex: 1; }
         .card-h { font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-bottom: 6px; }
-        .card-p { font-size: 0.85rem; color: #94a3b8; }
+        .card-p { font-size: 0.85rem; color: #94a3b8; line-height: 1.4; }
+        .card-cta { font-size: 0.75rem; color: #00f2fe; margin-top: 6px; font-weight: 600; }
+
         .timeline-card { background: rgba(10, 20, 40, 0.7); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 10px; padding: 18px; }
         .timeline-header { font-size: 0.85rem; font-weight: 700; color: #38bdf8; margin-bottom: 16px; }
         .timeline-list { display: flex; flex-direction: column; gap: 14px; }
         .timeline-item { font-size: 0.82rem; color: #cbd5e1; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; }
         .time-tag { color: #00f2fe; font-weight: 600; font-family: monospace; }
+
+        /* Modal Overlay Reader */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(12px); 
+            display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; 
+        }
+        .modal-content { 
+            background: #0b1329; border: 1px solid #38bdf8; border-radius: 12px; 
+            max-width: 600px; width: 90%; max-height: 85vh; overflow-y: auto; padding: 24px; 
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.3); position: relative; 
+        }
+        .modal-close { position: absolute; top: 16px; right: 20px; font-size: 1.5rem; color: #94a3b8; cursor: pointer; }
+        .modal-close:hover { color: #38bdf8; }
+        .modal-img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 16px; border: 1px solid rgba(56, 189, 248, 0.2); }
+        .modal-title { font-size: 1.3rem; font-weight: 800; color: #f8fafc; margin-bottom: 12px; }
+        .modal-body { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 18px; }
+        .modal-btn-area { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; }
+        .modal-btn { display: inline-block; background: #0284c7; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; border: none; cursor: pointer; }
+        .modal-btn:hover { background: #0369a1; }
     </style>
 </head>
 <body>
@@ -132,14 +168,30 @@ DASHBOARD_HTML = """
         </div>
     </div>
 
+    <!-- Article Reader Modal Overlay -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <img class="modal-img" id="modal-img" src="" alt="Thumbnail">
+            <div class="modal-title" id="modal-title"></div>
+            <div class="modal-body" id="modal-text"></div>
+            <div class="modal-btn-area">
+                <button class="modal-btn" style="background:#334155;" onclick="closeModal()">Close</button>
+                <a class="modal-btn" id="modal-link" href="#" target="_blank" rel="noopener noreferrer">Read Original Source &rarr;</a>
+            </div>
+        </div>
+    </div>
+
     <script>
         function updateActivityLog(msg) {
             const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             const log = document.getElementById('activity-log');
-            const item = document.createElement('div');
-            item.className = 'timeline-item';
-            item.innerHTML = `<span class="time-tag">${timeStr}</span> ${msg}`;
-            log.prepend(item);
+            if (log) {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                item.innerHTML = `<span class="time-tag">${timeStr}</span> ${msg}`;
+                log.prepend(item);
+            }
         }
 
         async function initAgent() {
@@ -172,14 +224,19 @@ DASHBOARD_HTML = """
 
                 feed.innerHTML = '';
                 posts.forEach(post => {
-                    const imgUrl = (post.sources && post.sources.length > 1) ? post.sources[1] : 'https://image.pollinations.ai/prompt/ai%20tech?width=400&height=300';
+                    const sources = Array.isArray(post.sources) ? post.sources : [];
+                    const originalUrl = sources[0] || 'https://techcrunch.com/category/artificial-intelligence/';
+                    const imgUrl = sources[1] || 'https://image.pollinations.ai/prompt/ai%20technology?width=400&height=300';
+                    
                     const card = document.createElement('div');
                     card.className = 'feed-card';
+                    card.onclick = () => openModal(post.title, post.text, imgUrl, originalUrl);
                     card.innerHTML = `
                         <img class="card-thumb" src="${imgUrl}" alt="Thumb" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400'">
                         <div class="card-info">
                             <div class="card-h">${post.title || 'AI Frontier Analysis'}</div>
                             <div class="card-p">${post.text || ''}</div>
+                            <div class="card-cta">Click to read article details &rarr;</div>
                         </div>
                     `;
                     feed.appendChild(card);
@@ -188,6 +245,18 @@ DASHBOARD_HTML = """
             } catch(e) {
                 document.getElementById('status-text').innerText = "Error loading feed.";
             }
+        }
+
+        function openModal(title, text, imgUrl, sourceUrl) {
+            document.getElementById('modal-title').innerText = title || 'Insight Details';
+            document.getElementById('modal-text').innerText = text || '';
+            document.getElementById('modal-img').src = imgUrl;
+            document.getElementById('modal-link').href = sourceUrl;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
         }
 
         updateActivityLog("System online.");
