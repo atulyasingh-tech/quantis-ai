@@ -64,7 +64,7 @@ In compliance with hackathon verification guidelines for autonomous AI agents an
 ## 👥 Contributors
 
 - **Atulya Kumar Singh** — Lead Architect & Developer ([@atulyasingh-tech](https://github.com/atulyasingh-tech))
-- **[Pasumarthy Teja Sai]** — Co-Developer ([@TEJASAI0100]](https://github.com/TEJASAI0100))
+- **Pasumarthy Teja Sai** — Co-Developer ([@TEJASAI0100]](https://github.com/TEJASAI0100))
 
 ## 📄 License
 
