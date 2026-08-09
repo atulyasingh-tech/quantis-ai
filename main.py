@@ -121,21 +121,28 @@ DASHBOARD_HTML = """
 </head>
 <body>
     <div class="sidebar">
-        <div>
-            <div class="logo-area">
-                <img class="logo-img" src="https://raw.githubusercontent.com/atulyasingh-tech/quantis-ai/main/quantislogo.jpeg" alt="Quantis Logo">
-                <div>
-                    <div class="logo-text">QUANTIS</div>
-                    <div class="logo-sub">AI FRONTIER ANALYST</div>
-                </div>
+    <div>
+        <div class="logo-area">
+            <img class="logo-img" src="https://raw.githubusercontent.com/atulyasingh-tech/quantis-ai/main/quantislogo.jpeg" alt="Quantis Logo">
+            <div>
+                <div class="logo-text">QUANTIS</div>
+                <div class="logo-sub">AI FRONTIER ANALYST</div>
             </div>
         </div>
-        <div class="status-card">
-            <div class="status-title">AGENT STATUS</div>
-            <div class="status-value"><div class="status-dot"></div> LIVE</div>
-            <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">Autonomous Mode</div>
+
+        <!-- Restored Interactive Navigation for Judges -->
+        <div class="nav-menu" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px;">
+            <a href="#" style="padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; color: #38bdf8; background: rgba(2, 132, 199, 0.3); border: 1px solid #0284c7; text-decoration: none; font-weight: 600;">Dashboard</a>
+            <a href="/docs" target="_blank" style="padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; color: #94a3b8; border: 1px solid rgba(56, 189, 248, 0.2); text-decoration: none; font-weight: 500; transition: all 0.2s;">API Docs ↗</a>
         </div>
     </div>
+
+    <div class="status-card">
+        <div class="status-title">AGENT STATUS</div>
+        <div class="status-value"><div class="status-dot"></div> LIVE</div>
+        <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">Autonomous Mode</div>
+    </div>
+</div>
 
     <div class="main-content">
         <div class="header-bar">
