@@ -6,9 +6,9 @@ from database.connection import AsyncSessionLocal, init_db
 from database.models import PublishedPost
 from agents.core_agent import quantis_agent
 
-router = APIRouter(prefix="/api/agent")
+router = APIRouter(prefix="/api/agent", tags=["Quantis Agent API"])
 
-@router.post("/init")
+@router.post("/init", summary="Trigger Autonomous Discovery Loop")
 async def initialize_agent():
     await init_db()
     await quantis_agent.run_autonomous_loop()
@@ -18,7 +18,7 @@ async def initialize_agent():
         "initializedAt": datetime.utcnow().isoformat()
     }
 
-@router.get("/feed")
+@router.get("/feed", summary="Retrieve Published Insights")
 async def get_feed():
     await init_db()
     async with AsyncSessionLocal() as db:
