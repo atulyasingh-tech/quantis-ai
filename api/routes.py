@@ -5,7 +5,6 @@ from datetime import datetime
 
 from database.connection import AsyncSessionLocal
 from database.models import PublishedPost
-from scheduler.task_scheduler import start_scheduler
 from agents.core_agent import quantis_agent
 
 router = APIRouter(prefix="/api/agent")
@@ -16,9 +15,14 @@ async def get_db():
 
 @router.post("/init")
 async def initialize_agent():
-    start_scheduler()
+    # Safely start scheduler if supported
+    try:
+        from scheduler.task_scheduler import start_scheduler
+        start_scheduler()
+    except Exception:
+        pass
     
-    # Run synchronously to ensure initial insights are committed directly to SQLite
+    # Directly run discovery pass
     await quantis_agent.run_autonomous_loop()
     
     return {
@@ -37,7 +41,7 @@ async def get_feed(db: AsyncSession = Depends(get_db)):
         "feed": [
             {
                 "id": p.id,
-                "createdAt": p.created_at.isoformat(),
+                "createdAt": p.created_at.isoformat() if p.created_at else "",
                 "title": p.title,
                 "text": p.text,
                 "rationale": p.rationale,
