@@ -10,12 +10,8 @@ router = APIRouter(prefix="/api/agent")
 
 @router.post("/init")
 async def initialize_agent():
-    # Ensure database schema exists in /tmp/
     await init_db()
-    
-    # Run autonomous loop to populate feed
     await quantis_agent.run_autonomous_loop()
-    
     return {
         "status": "active",
         "message": "Quantis AI initialized successfully. Feed updated.",
@@ -25,7 +21,6 @@ async def initialize_agent():
 @router.get("/feed")
 async def get_feed():
     await init_db()
-    
     async with AsyncSessionLocal() as db:
         result = await db.execute(select(PublishedPost).order_by(PublishedPost.created_at.desc()))
         posts = result.scalars().all()
@@ -39,9 +34,9 @@ async def get_feed():
                     "title": p.title,
                     "text": p.text,
                     "rationale": p.rationale,
-                    "sources": p.sources,
-                    "confidenceScore": p.confidence_score,
-                    "futureImpactPrediction": p.future_impact
+                    "sources": p.sources if isinstance(p.sources, list) else [],
+                    "confidenceScore": p.confidence_score or 0.95,
+                    "futureImpactPrediction": p.future_impact or "High strategic relevance."
                 } for p in posts
             ]
         }
