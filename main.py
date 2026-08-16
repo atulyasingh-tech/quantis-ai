@@ -50,8 +50,8 @@ DASHBOARD_HTML = """
     <style>
         :root {
             --bg: #030712;
-            --card-bg: rgba(13, 21, 44, 0.7);
-            --border-glow: rgba(56, 189, 248, 0.22);
+            --card-bg: rgba(13, 21, 44, 0.72);
+            --border-glow: rgba(56, 189, 248, 0.2);
             --border-hover: rgba(168, 85, 247, 0.55);
             --accent-cyan: #38bdf8;
             --accent-purple: #a855f7;
@@ -107,7 +107,7 @@ DASHBOARD_HTML = """
             align-items: center;
             justify-content: space-between;
             padding: 0 48px;
-            background: rgba(3, 7, 18, 0.8);
+            background: rgba(3, 7, 18, 0.85);
             backdrop-filter: blur(18px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             z-index: 50;
@@ -200,7 +200,6 @@ DASHBOARD_HTML = """
             margin-bottom: 40px;
         }
 
-        /* Breeth-Style Floating Tags */
         .corner-tag {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
@@ -279,37 +278,11 @@ DASHBOARD_HTML = """
         }
 
         /* Bento Architecture Grid */
-        .bento-section {
-            padding: 100px 24px;
-        }
-        .section-header {
-            text-align: left;
-            margin-bottom: 48px;
-            max-width: 1080px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .section-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: #38bdf8;
-            letter-spacing: 1.5px;
-            margin-bottom: 12px;
-            display: block;
-        }
-        .section-h2 {
-            font-size: clamp(2rem, 3.8vw, 3rem);
-            font-weight: 800;
-            color: #fff;
-            line-height: 1.2;
-        }
-        .bento-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 24px;
-            max-width: 1080px;
-            margin: 0 auto;
-        }
+        .bento-section { padding: 100px 24px; }
+        .section-header { text-align: left; margin-bottom: 48px; max-width: 1080px; margin-left: auto; margin-right: auto; }
+        .section-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #38bdf8; letter-spacing: 1.5px; margin-bottom: 12px; display: block; }
+        .section-h2 { font-size: clamp(2rem, 3.8vw, 3rem); font-weight: 800; color: #fff; line-height: 1.2; }
+        .bento-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; max-width: 1080px; margin: 0 auto; }
         .bento-card {
             background: var(--card-bg);
             border: 1px solid var(--border-glow);
@@ -321,31 +294,10 @@ DASHBOARD_HTML = """
             justify-content: space-between;
             transition: all 0.3s;
         }
-        .bento-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 0 35px rgba(168, 85, 247, 0.2);
-        }
-        .bento-pill {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            color: #c084fc;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
-        .bento-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 14px;
-            line-height: 1.3;
-        }
-        .bento-desc {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.65;
-            margin-bottom: 24px;
-        }
+        .bento-card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: 0 0 35px rgba(168, 85, 247, 0.2); }
+        .bento-pill { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #c084fc; letter-spacing: 1px; margin-bottom: 16px; }
+        .bento-title { font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: 14px; line-height: 1.3; }
+        .bento-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 24px; }
         .bento-code {
             background: #020617;
             border: 1px solid rgba(56, 189, 248, 0.2);
@@ -356,18 +308,15 @@ DASHBOARD_HTML = """
             color: #38bdf8;
             line-height: 1.6;
         }
+        .bento-col-right { display: flex; flex-direction: column; gap: 24px; }
 
-        .bento-col-right {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        /* Command Center Section */
+        /* ========================================================================= */
+        /* OPTION B: COMMAND CENTER DASHBOARD (2-COLUMN BENTO GRID + TELEMETRY DOCK) */
+        /* ========================================================================= */
         #dashboard-view {
             display: none;
-            padding: 100px 40px 60px;
-            max-width: 1400px;
+            padding: 105px 40px 60px;
+            max-width: 1480px;
             margin: 0 auto;
             position: relative;
             z-index: 10;
@@ -382,74 +331,194 @@ DASHBOARD_HTML = """
             flex-wrap: wrap;
             gap: 16px;
             margin-bottom: 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 24px;
         }
-        .dash-title { font-size: 1.8rem; font-weight: 800; }
-        .dash-sub { color: var(--accent-cyan); font-size: 0.9rem; margin-top: 4px; }
+        .dash-title { font-size: 2rem; font-weight: 800; }
+        .dash-sub { color: var(--accent-cyan); font-size: 0.92rem; margin-top: 4px; display: flex; align-items: center; gap: 8px; }
         .dash-actions { display: flex; gap: 12px; }
 
+        /* Metrics Ribbon */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 16px;
-            margin-bottom: 28px;
+            margin-bottom: 32px;
         }
         .metric-card {
             background: var(--card-bg);
             border: 1px solid var(--border-glow);
-            border-radius: 12px;
-            padding: 18px;
+            border-radius: 14px;
+            padding: 20px;
             backdrop-filter: blur(12px);
+            transition: all 0.2s;
         }
+        .metric-card:hover { border-color: var(--accent-cyan); }
         .metric-label { font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.5px; }
-        .metric-val { font-size: 1.8rem; font-weight: 800; color: #fff; margin-top: 6px; }
+        .metric-val { font-size: 1.85rem; font-weight: 800; color: #fff; margin-top: 6px; }
 
-        .content-split { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
-        .feed-container { display: flex; flex-direction: column; gap: 16px; }
-        
+        /* Main Workspace Split (70% Grid / 30% Telemetry) */
+        .workspace-split {
+            display: grid;
+            grid-template-columns: 2.3fr 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        /* 2-Column Bento Feed Grid */
+        .bento-feed-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
         .feed-card {
             background: var(--card-bg);
             border: 1px solid var(--border-glow);
-            border-radius: 12px;
-            padding: 18px;
+            border-radius: 14px;
+            overflow: hidden;
             display: flex;
-            gap: 18px;
-            align-items: center;
+            flex-direction: column;
             cursor: pointer;
-            transition: all 0.25s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(12px);
+            position: relative;
         }
         .feed-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(168, 85, 247, 0.25);
         }
-        .card-thumb { width: 120px; height: 90px; border-radius: 8px; object-fit: cover; background: #020617; }
-        .card-info { flex: 1; }
-        .card-h { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
-        .card-p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; }
-        .card-cta { font-size: 0.78rem; color: var(--accent-cyan); margin-top: 8px; font-weight: 600; }
+
+        .card-banner-wrap {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+            background: #020617;
+        }
+        .card-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .feed-card:hover .card-thumb { transform: scale(1.05); }
+
+        .card-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(3, 7, 18, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            color: #38bdf8;
+            font-weight: 700;
+            backdrop-filter: blur(6px);
+        }
+
+        .card-score {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(168, 85, 247, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+        }
+        .card-h {
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        .card-p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.55;
+            margin-bottom: 16px;
+        }
+        .card-footer-action {
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Right Sidebar Telemetry Stream */
+        .sidebar-telemetry-dock {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: sticky;
+            top: 96px;
+        }
+
+        .telemetry-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 14px;
+            padding: 24px;
+            backdrop-filter: blur(12px);
+        }
+        .telemetry-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 18px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .telemetry-list { display: flex; flex-direction: column; gap: 14px; }
+        .telemetry-item {
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 10px;
+        }
+        .time-tag { color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
 
         /* Skeleton Loaders */
-        .skeleton-card {
+        .skeleton-bento {
             background: rgba(15, 23, 42, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 18px;
+            border-radius: 14px;
+            overflow: hidden;
+            height: 290px;
             display: flex;
-            gap: 18px;
-            align-items: center;
+            flex-direction: column;
         }
-        .skeleton-thumb {
-            width: 120px;
-            height: 90px;
-            border-radius: 8px;
+        .skeleton-banner {
+            height: 150px;
             background: linear-gradient(90deg, #0f172a 25%, #1e293b 50%, #0f172a 75%);
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
         }
-        .skeleton-lines { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        .skeleton-content { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
         .skeleton-line {
-            height: 16px;
+            height: 14px;
             border-radius: 4px;
             background: linear-gradient(90deg, #0f172a 25%, #1e293b 50%, #0f172a 75%);
             background-size: 200% 100%;
@@ -457,35 +526,22 @@ DASHBOARD_HTML = """
         }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        .timeline-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-glow);
-            border-radius: 12px;
-            padding: 22px;
-            backdrop-filter: blur(12px);
-            height: fit-content;
-        }
-        .timeline-header { font-size: 0.85rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 18px; letter-spacing: 0.5px; }
-        .timeline-list { display: flex; flex-direction: column; gap: 14px; }
-        .timeline-item { font-size: 0.82rem; color: #cbd5e1; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 10px; }
-        .time-tag { color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
-
         /* Modal Overlay Reader */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px); 
+            background: rgba(2, 6, 23, 0.88); backdrop-filter: blur(16px); 
             display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; 
         }
         .modal-content { 
-            background: #0b1329; border: 1px solid var(--accent-cyan); border-radius: 14px; 
-            max-width: 620px; width: 92%; max-height: 85vh; overflow-y: auto; padding: 28px; 
-            box-shadow: 0 0 45px rgba(56, 189, 248, 0.35); position: relative; 
+            background: #0b1329; border: 1px solid var(--accent-cyan); border-radius: 16px; 
+            max-width: 640px; width: 94%; max-height: 85vh; overflow-y: auto; padding: 28px; 
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.35); position: relative; 
         }
         .modal-close { position: absolute; top: 16px; right: 20px; font-size: 1.5rem; color: var(--text-secondary); cursor: pointer; }
         .modal-close:hover { color: var(--accent-cyan); }
-        .modal-img { width: 100%; height: 220px; object-fit: cover; border-radius: 10px; margin-bottom: 18px; border: 1px solid var(--border-glow); }
-        .modal-title { font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
-        .modal-body { font-size: 0.92rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 22px; }
+        .modal-img { width: 100%; height: 230px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--border-glow); }
+        .modal-title { font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.35; }
+        .modal-body { font-size: 0.92rem; color: #cbd5e1; line-height: 1.65; margin-bottom: 24px; }
         .modal-btn-area { display: flex; justify-content: flex-end; gap: 12px; }
 
         #toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 200; }
@@ -503,7 +559,7 @@ DASHBOARD_HTML = """
         /* Footer Section */
         .footer {
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(2, 6, 23, 0.9);
+            background: rgba(2, 6, 23, 0.92);
             padding: 60px 48px 40px;
             position: relative;
             z-index: 10;
@@ -558,13 +614,14 @@ DASHBOARD_HTML = """
         }
 
         /* Responsive Breakpoints */
-        @media (max-width: 1024px) {
-            .bento-grid { grid-template-columns: 1fr; }
+        @media (max-width: 1120px) {
+            .workspace-split { grid-template-columns: 1fr; }
+            .sidebar-telemetry-dock { position: static; }
             .metrics-grid { grid-template-columns: repeat(3, 1fr); }
-            .content-split { grid-template-columns: 1fr; }
             .corner-tag { display: none; }
         }
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
+            .bento-feed-grid { grid-template-columns: 1fr; }
             .navbar { padding: 0 20px; }
             .nav-links { display: none; }
             .metrics-grid { grid-template-columns: repeat(2, 1fr); }
@@ -638,7 +695,6 @@ DASHBOARD_HTML = """
             </div>
 
             <div class="bento-grid">
-                <!-- Large Card 1 -->
                 <div class="bento-card">
                     <div>
                         <div class="bento-pill">SIGNAL OVER HYPE</div>
@@ -656,7 +712,6 @@ DASHBOARD_HTML = """
                     </div>
                 </div>
 
-                <!-- Column Right Cards -->
                 <div class="bento-col-right">
                     <div class="bento-card">
                         <div>
@@ -718,12 +773,12 @@ DASHBOARD_HTML = """
         </footer>
     </div>
 
-    <!-- 2. Command Center Dashboard View -->
+    <!-- 2. Command Center Dashboard View (Option B: Bento Grid) -->
     <main id="dashboard-view">
         <div class="dashboard-header">
             <div>
                 <div class="dash-title">Quantis Command Center</div>
-                <div class="dash-sub" id="status-text">Autonomous intelligence engine actively streaming</div>
+                <div class="dash-sub" id="status-text"><span class="pulse-dot"></span> Live autonomous discovery stream active</div>
             </div>
             <div class="dash-actions">
                 <button class="btn-primary" style="padding:10px 22px; font-size:0.85rem;" onclick="initAgent()">1. Trigger Discovery</button>
@@ -737,18 +792,36 @@ DASHBOARD_HTML = """
             <div class="metric-card"><div class="metric-label">TOPICS EVALUATED</div><div class="metric-val">94</div></div>
             <div class="metric-card"><div class="metric-label">POSTS PUBLISHED</div><div class="metric-val" id="published-count">10</div></div>
             <div class="metric-card"><div class="metric-label">TOPICS REJECTED</div><div class="metric-val">86</div></div>
-            <div class="metric-card"><div class="metric-label">MEMORY ENTRIES</div><div class="metric-val">312</div></div>
+            <div class="metric-card"><div class="metric-label">MEMORY NODES</div><div class="metric-val">312</div></div>
         </div>
 
-        <div class="content-split">
-            <div class="feed-container" id="feed">
-                <div class="skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-lines"><div class="skeleton-line" style="width:70%;"></div><div class="skeleton-line" style="width:90%;"></div></div></div>
-                <div class="skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-lines"><div class="skeleton-line" style="width:60%;"></div><div class="skeleton-line" style="width:85%;"></div></div></div>
-                <div class="skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-lines"><div class="skeleton-line" style="width:80%;"></div><div class="skeleton-line" style="width:75%;"></div></div></div>
+        <div class="workspace-split">
+            <!-- 2-Column Bento Feed Grid -->
+            <div class="bento-feed-grid" id="feed">
+                <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:70%;"></div><div class="skeleton-line" style="width:90%;"></div><div class="skeleton-line" style="width:60%;"></div></div></div>
+                <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:80%;"></div><div class="skeleton-line" style="width:85%;"></div><div class="skeleton-line" style="width:50%;"></div></div></div>
+                <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:60%;"></div><div class="skeleton-line" style="width:95%;"></div><div class="skeleton-line" style="width:70%;"></div></div></div>
+                <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:75%;"></div><div class="skeleton-line" style="width:80%;"></div><div class="skeleton-line" style="width:40%;"></div></div></div>
             </div>
-            <div class="timeline-card">
-                <div class="timeline-header">AGENT ACTIVITY</div>
-                <div class="timeline-list" id="activity-log"></div>
+
+            <!-- Telemetry Sidebar -->
+            <div class="sidebar-telemetry-dock">
+                <div class="telemetry-card">
+                    <div class="telemetry-title">
+                        <span>AGENT TELEMETRY STREAM</span>
+                        <span style="font-size:0.7rem; color:#4ade80;">● ACTIVE</span>
+                    </div>
+                    <div class="telemetry-list" id="activity-log"></div>
+                </div>
+
+                <div class="telemetry-card">
+                    <div class="telemetry-title">STRATEGIC DOMAINS</div>
+                    <div style="display:flex; flex-direction:column; gap:10px; font-size:0.8rem; color:#94a3b8;">
+                        <div style="display:flex; justify-content:space-between;"><span>Models & Agents</span><span style="color:#38bdf8; font-weight:700;">45%</span></div>
+                        <div style="display:flex; justify-content:space-between;"><span>Hardware Scaling</span><span style="color:#c084fc; font-weight:700;">30%</span></div>
+                        <div style="display:flex; justify-content:space-between;"><span>Infra & MoE Routing</span><span style="color:#4ade80; font-weight:700;">25%</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -771,7 +844,7 @@ DASHBOARD_HTML = """
     <div id="toast-container"></div>
 
     <script>
-        /* High-Intensity Glowing Particles + Shooting Stars (Meteors) Engine */
+        /* High-Intensity Glowing Particles + Shooting Stars Engine */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -838,17 +911,14 @@ DASHBOARD_HTML = """
         }
 
         class Meteor {
-            constructor() {
-                this.reset();
-            }
+            constructor() { this.reset(); }
             reset() {
                 this.x = Math.random() * canvas.width * 1.2;
                 this.y = Math.random() * -100;
                 this.length = Math.random() * 120 + 80;
                 this.speed = Math.random() * 9 + 12;
                 this.size = Math.random() * 1.8 + 1;
-                this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.2; // ~45 deg diagonal
-                this.alpha = 1;
+                this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.2;
                 this.color = Math.random() > 0.4 ? '#38bdf8' : '#c084fc';
                 this.active = true;
             }
@@ -889,9 +959,7 @@ DASHBOARD_HTML = """
         function initParticles() {
             particles = [];
             const count = Math.floor((canvas.width * canvas.height) / 7500);
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < count; i++) particles.push(new Particle());
 
             meteors = [];
             for (let i = 0; i < 3; i++) {
@@ -904,19 +972,14 @@ DASHBOARD_HTML = """
 
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw & Update Particles
             for (let i = 0; i < particles.length; i++) {
                 particles[i].draw();
                 particles[i].update();
             }
-
-            // Draw & Update Meteors / Shooting Stars
             for (let i = 0; i < meteors.length; i++) {
                 meteors[i].draw();
                 meteors[i].update();
             }
-
             requestAnimationFrame(animateParticles);
         }
         resizeCanvas();
@@ -936,7 +999,6 @@ DASHBOARD_HTML = """
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* Toast Notifications */
         function showToast(msg) {
             const container = document.getElementById('toast-container');
             if (container) {
@@ -960,21 +1022,23 @@ DASHBOARD_HTML = """
         }
 
         async function initAgent() {
-            document.getElementById('status-text').innerText = "Scanning live sources...";
+            document.getElementById('status-text').innerHTML = "<span class='pulse-dot'></span> Scanning live RSS feeds & evaluating signals...";
             updateActivityLog("Running RSS news discovery...");
             showToast("Discovery Engine Activated...");
             try {
                 const res = await fetch('/api/agent/init', { method: 'POST' });
                 const data = await res.json();
-                document.getElementById('status-text').innerText = data.message || "Discovery pass completed.";
+                document.getElementById('status-text').innerHTML = `<span class='pulse-dot'></span> ${data.message || "Discovery pass completed."}`;
                 updateActivityLog("Evaluated RSS feeds & updated database.");
                 showToast("New insights processed successfully!");
                 setTimeout(loadFeed, 1000);
             } catch(e) {
-                document.getElementById('status-text').innerText = "Error initializing agent.";
+                document.getElementById('status-text').innerHTML = "<span class='pulse-dot' style='background:#f87171;'></span> Error initializing agent.";
                 showToast("Initialization error occurred.");
             }
         }
+
+        const CATEGORIES = ["MODELS & AGENTS", "HARDWARE & SCALING", "INFRASTRUCTURE", "SECURITY & SAFETY", "FRONTIER COMPUTE"];
 
         async function loadFeed() {
             try {
@@ -986,30 +1050,38 @@ DASHBOARD_HTML = """
                 document.getElementById('published-count').innerText = data.total ?? posts.length;
 
                 if (posts.length === 0) {
-                    feed.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:40px;">No posts yet. Click Trigger Discovery above.</div>';
+                    feed.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:40px; grid-column:span 2;">No posts yet. Click Trigger Discovery above.</div>';
                     return;
                 }
 
                 feed.innerHTML = '';
-                posts.forEach(post => {
+                posts.forEach((post, index) => {
                     const sources = Array.isArray(post.sources) ? post.sources : [];
                     const originalUrl = sources[0] || 'https://techcrunch.com/category/artificial-intelligence/';
                     const imgUrl = sources[1] || 'https://image.pollinations.ai/prompt/ai%20technology?width=400&height=300';
-                    
+                    const category = CATEGORIES[index % CATEGORIES.length];
+                    const score = Math.floor((post.confidenceScore || 0.95) * 100);
+
                     const card = document.createElement('div');
                     card.className = 'feed-card';
                     card.onclick = () => openModal(post.title, post.text, imgUrl, originalUrl);
                     card.innerHTML = `
-                        <img class="card-thumb" src="${imgUrl}" alt="Thumb" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400'">
-                        <div class="card-info">
-                            <div class="card-h">${post.title || 'AI Frontier Analysis'}</div>
-                            <div class="card-p">${post.text || ''}</div>
-                            <div class="card-cta">Click to read article details &rarr;</div>
+                        <div class="card-banner-wrap">
+                            <img class="card-thumb" src="${imgUrl}" alt="Thumbnail" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400'">
+                            <div class="card-badge">${category}</div>
+                            <div class="card-score">${score}% SIGNAL</div>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <div class="card-h">${post.title || 'AI Frontier Analysis'}</div>
+                                <div class="card-p">${post.text || ''}</div>
+                            </div>
+                            <div class="card-footer-action">Read Strategic Breakdown &rarr;</div>
                         </div>
                     `;
                     feed.appendChild(card);
                 });
-                updateActivityLog("Loaded published posts.");
+                updateActivityLog("Loaded published posts into 2-Column Bento Grid.");
             } catch(e) {
                 document.getElementById('status-text').innerText = "Error loading feed.";
             }
