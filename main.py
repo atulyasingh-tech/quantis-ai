@@ -203,7 +203,7 @@ DASHBOARD_HTML = """
             margin-bottom: 40px;
         }
 
-        /* Breeth-Style Floating Tags */
+        /* Floating Tags */
         .corner-tag {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
@@ -257,7 +257,7 @@ DASHBOARD_HTML = """
         }
         .btn-secondary:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: 0 0 25px rgba(56, 189, 248, 0.25); }
 
-        /* Breeth Section: Statement Manifesto */
+        /* Statement Section */
         .statement-section {
             padding: 90px 24px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -281,7 +281,7 @@ DASHBOARD_HTML = """
             font-weight: 800;
         }
 
-        /* Breeth Section: Bento Architecture Grid */
+        /* Bento Architecture Grid */
         .bento-section {
             padding: 100px 24px;
         }
@@ -595,7 +595,7 @@ DASHBOARD_HTML = """
             <a href="/docs" target="_blank" class="nav-link">API Docs ↗</a>
             <a href="https://github.com/atulyasingh-tech/quantis-ai" target="_blank" class="nav-link">GitHub ↗</a>
         </div>
-        <button class="nav-btn" onclick="showDashboard()">Get started &rarr;</button>
+        <button class="nav-btn" onclick="showDashboard()">Start Reading News &rarr;</button>
     </nav>
 
     <!-- 1. Landing Page Section -->
@@ -621,7 +621,7 @@ DASHBOARD_HTML = """
             </p>
 
             <div class="hero-cta-group">
-                <button class="btn-primary" onclick="showDashboard()">Get started free &rarr;</button>
+                <button class="btn-primary" onclick="showDashboard()">Start Reading News &rarr;</button>
                 <a href="/docs" target="_blank" class="btn-secondary">Explore API Docs ↗</a>
             </div>
         </section>
@@ -799,7 +799,7 @@ DASHBOARD_HTML = """
                 this.baseX = this.x;
                 this.baseY = this.y;
                 this.vx = (Math.random() - 0.5) * 0.7;
-                this.vy = (Math.random() - 0.5) * 0.7 - 0.35; // Continuous floating upward drift
+                this.vy = (Math.random() - 0.5) * 0.7 - 0.35;
                 this.density = (Math.random() * 25) + 2;
                 this.alpha = Math.random() * 0.65 + 0.35;
                 this.color = GLOW_COLORS[Math.floor(Math.random() * GLOW_COLORS.length)];
