@@ -50,17 +50,19 @@ DASHBOARD_HTML = """
     <style>
         :root {
             --bg: #030712;
-            --card-bg: rgba(15, 23, 42, 0.65);
-            --border-glow: rgba(56, 189, 248, 0.2);
-            --border-hover: rgba(56, 189, 248, 0.5);
+            --card-bg: rgba(13, 21, 44, 0.7);
+            --border-glow: rgba(56, 189, 248, 0.22);
+            --border-hover: rgba(168, 85, 247, 0.55);
             --accent-cyan: #38bdf8;
             --accent-purple: #a855f7;
-            --accent-gradient: linear-gradient(135deg, #a855f7 0%, #38bdf8 50%, #06b6d4 100%);
+            --accent-gradient: linear-gradient(135deg, #c084fc 0%, #38bdf8 50%, #06b6d4 100%);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
+            --text-muted: #64748b;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+        html { scroll-behavior: smooth; }
         body { 
             background: var(--bg); 
             color: var(--text-primary); 
@@ -69,7 +71,7 @@ DASHBOARD_HTML = """
             position: relative;
         }
 
-        /* Interactive Particle Background Canvas */
+        /* High-Intensity Interactive Star/Particle Canvas */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -80,22 +82,21 @@ DASHBOARD_HTML = """
             pointer-events: none;
         }
 
-        /* Radial Glow Orbs */
         .ambient-glow {
             position: fixed;
-            top: 40%;
+            top: 35%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 650px;
-            height: 650px;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(56, 189, 248, 0.08) 45%, rgba(3, 7, 18, 0) 70%);
+            width: 750px;
+            height: 750px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.22) 0%, rgba(56, 189, 248, 0.12) 40%, rgba(3, 7, 18, 0) 70%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            filter: blur(40px);
+            filter: blur(50px);
         }
 
-        /* Top Navigation Bar */
+        /* Top Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -105,77 +106,88 @@ DASHBOARD_HTML = """
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 40px;
-            background: rgba(3, 7, 18, 0.7);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0 48px;
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             z-index: 50;
         }
         .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .nav-logo { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border-glow); }
-        .nav-title { font-size: 1.15rem; font-weight: 800; letter-spacing: 1px; color: #fff; }
-        .nav-links { display: flex; align-items: center; gap: 28px; }
-        .nav-link { color: var(--text-secondary); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
-        .nav-link:hover { color: var(--text-primary); }
+        .nav-logo { width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border-glow); }
+        .nav-title { font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; color: #fff; }
+        .nav-links { display: flex; align-items: center; gap: 32px; }
+        .nav-link { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+        .nav-link:hover { color: #fff; }
+        
         .nav-btn {
             background: var(--accent-gradient);
             color: #fff;
-            padding: 8px 18px;
+            padding: 9px 22px;
             border-radius: 9999px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.88rem;
+            font-weight: 700;
             text-decoration: none;
             border: none;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
         }
-        .nav-btn:hover { transform: scale(1.03); box-shadow: 0 0 25px rgba(56, 189, 248, 0.5); }
+        .nav-btn:hover { transform: scale(1.04); box-shadow: 0 0 35px rgba(56, 189, 248, 0.6); }
 
-        /* Hero Landing Section */
+        /* Container Layout */
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+        /* Hero Section */
         #landing-view {
-            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-section {
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 120px 24px 60px;
+            padding: 130px 24px 60px;
             position: relative;
-            z-index: 10;
         }
 
         .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 16px;
+            padding: 7px 18px;
             border-radius: 9999px;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            font-size: 0.75rem;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            font-size: 0.78rem;
             font-family: 'JetBrains Mono', monospace;
             color: #38bdf8;
             margin-bottom: 28px;
             letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
         }
         .pulse-dot {
-            width: 7px;
-            height: 7px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #4ade80;
-            box-shadow: 0 0 10px #4ade80;
+            box-shadow: 0 0 12px #4ade80;
             animation: pulse 2s infinite;
         }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
 
         .hero-title {
-            font-size: clamp(2.5rem, 5vw, 4.2rem);
+            font-size: clamp(2.6rem, 5.5vw, 4.4rem);
             font-weight: 800;
             line-height: 1.15;
-            max-width: 900px;
-            margin-bottom: 20px;
-            letter-spacing: -0.02em;
+            max-width: 940px;
+            margin-bottom: 22px;
+            letter-spacing: -0.025em;
         }
         .gradient-text {
             background: var(--accent-gradient);
@@ -184,14 +196,14 @@ DASHBOARD_HTML = """
         }
 
         .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-size: clamp(1.05rem, 2vw, 1.25rem);
             color: var(--text-secondary);
-            max-width: 680px;
-            line-height: 1.6;
-            margin-bottom: 36px;
+            max-width: 720px;
+            line-height: 1.65;
+            margin-bottom: 40px;
         }
 
-        /* Floating Corner Node Callouts (Breeth Style) */
+        /* Breeth-Style Floating Tags */
         .corner-tag {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
@@ -202,23 +214,23 @@ DASHBOARD_HTML = """
             gap: 4px;
             pointer-events: none;
         }
-        .corner-tag span { color: #a855f7; font-weight: 600; }
-        .tag-top-left { top: 28%; left: 12%; text-align: left; }
-        .tag-top-right { top: 28%; right: 12%; text-align: right; }
-        .tag-bottom-left { bottom: 20%; left: 14%; text-align: left; }
-        .tag-bottom-right { bottom: 20%; right: 14%; text-align: right; }
+        .corner-tag span { color: #c084fc; font-weight: 700; }
+        .tag-top-left { top: 25%; left: 8%; text-align: left; }
+        .tag-top-right { top: 25%; right: 8%; text-align: right; }
+        .tag-bottom-left { bottom: 18%; left: 10%; text-align: left; }
+        .tag-bottom-right { bottom: 18%; right: 10%; text-align: right; }
 
         .hero-cta-group {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 18px;
             flex-wrap: wrap;
             justify-content: center;
         }
         .btn-primary {
             background: var(--accent-gradient);
             color: #fff;
-            padding: 14px 32px;
+            padding: 15px 34px;
             border-radius: 9999px;
             font-size: 1rem;
             font-weight: 700;
@@ -227,25 +239,134 @@ DASHBOARD_HTML = """
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+            gap: 10px;
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.45);
             transition: all 0.3s;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(56, 189, 248, 0.6); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 45px rgba(56, 189, 248, 0.7); }
         .btn-secondary {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             border: 1px solid var(--border-glow);
             color: var(--text-primary);
-            padding: 14px 28px;
+            padding: 15px 30px;
             border-radius: 9999px;
             font-size: 0.95rem;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s;
         }
-        .btn-secondary:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+        .btn-secondary:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: 0 0 25px rgba(56, 189, 248, 0.25); }
 
-        /* Command Center Section (Hidden by default, shown on Get Started) */
+        /* Breeth Section: Statement Manifesto */
+        .statement-section {
+            padding: 90px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(8, 14, 30, 0.35);
+            text-align: left;
+        }
+        .statement-text {
+            font-size: clamp(1.8rem, 4vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.3;
+            color: #94a3b8;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+        .statement-text span { color: #f8fafc; }
+        .statement-highlight {
+            background: linear-gradient(135deg, #c084fc, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        /* Breeth Section: Bento Architecture Grid */
+        .bento-section {
+            padding: 100px 24px;
+        }
+        .section-header {
+            text-align: left;
+            margin-bottom: 48px;
+            max-width: 1080px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #38bdf8;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .section-h2 {
+            font-size: clamp(2rem, 3.8vw, 3rem);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 24px;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+        .bento-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 36px;
+            backdrop-filter: blur(14px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+        .bento-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.2);
+        }
+        .bento-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: #c084fc;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+        .bento-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 14px;
+            line-height: 1.3;
+        }
+        .bento-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin-bottom: 24px;
+        }
+        .bento-code {
+            background: #020617;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 10px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            color: #38bdf8;
+            line-height: 1.6;
+        }
+
+        .bento-col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Command Center Section */
         #dashboard-view {
             display: none;
             padding: 100px 40px 60px;
@@ -253,8 +374,9 @@ DASHBOARD_HTML = """
             margin: 0 auto;
             position: relative;
             z-index: 10;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.4s ease-out;
         }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         .dashboard-header {
             display: flex;
@@ -302,7 +424,7 @@ DASHBOARD_HTML = """
         .feed-card:hover {
             border-color: var(--accent-cyan);
             transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
         }
         .card-thumb { width: 120px; height: 90px; border-radius: 8px; object-fit: cover; background: #020617; }
         .card-info { flex: 1; }
@@ -360,7 +482,7 @@ DASHBOARD_HTML = """
         .modal-content { 
             background: #0b1329; border: 1px solid var(--accent-cyan); border-radius: 14px; 
             max-width: 620px; width: 92%; max-height: 85vh; overflow-y: auto; padding: 28px; 
-            box-shadow: 0 0 40px rgba(56, 189, 248, 0.3); position: relative; 
+            box-shadow: 0 0 45px rgba(56, 189, 248, 0.35); position: relative; 
         }
         .modal-close { position: absolute; top: 16px; right: 20px; font-size: 1.5rem; color: var(--text-secondary); cursor: pointer; }
         .modal-close:hover { color: var(--accent-cyan); }
@@ -377,13 +499,70 @@ DASHBOARD_HTML = """
             padding: 12px 20px; 
             border-radius: 8px; 
             font-size: 0.85rem; 
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); 
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.35); 
             animation: fadeIn 0.3s ease; 
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Footer Section */
+        .footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(2, 6, 23, 0.9);
+            padding: 60px 48px 40px;
+            position: relative;
+            z-index: 10;
+        }
+        .footer-content {
+            max-width: 1140px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-brand { max-width: 380px; }
+        .footer-brand-title { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+        .footer-brand-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
+        
+        .footer-authors-block { display: flex; flex-direction: column; gap: 10px; }
+        .footer-heading { font-size: 0.85rem; font-weight: 700; color: #38bdf8; letter-spacing: 1px; margin-bottom: 8px; }
+        .author-tag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #f8fafc;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .author-tag:hover { color: #c084fc; }
+        .author-badge {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.72rem;
+            color: #c084fc;
+        }
+
+        .footer-bottom {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
 
         /* Responsive Breakpoints */
         @media (max-width: 1024px) {
+            .bento-grid { grid-template-columns: 1fr; }
             .metrics-grid { grid-template-columns: repeat(3, 1fr); }
             .content-split { grid-template-columns: 1fr; }
             .corner-tag { display: none; }
@@ -393,10 +572,12 @@ DASHBOARD_HTML = """
             .nav-links { display: none; }
             .metrics-grid { grid-template-columns: repeat(2, 1fr); }
             #dashboard-view { padding: 90px 16px 40px; }
+            .footer { padding: 40px 20px 30px; }
         }
     </style>
 </head>
 <body>
+    <!-- Live Particle Canvas -->
     <canvas id="particle-canvas"></canvas>
     <div class="ambient-glow"></div>
 
@@ -408,38 +589,137 @@ DASHBOARD_HTML = """
         </a>
         <div class="nav-links">
             <a href="#" class="nav-link" onclick="showLanding()">Overview</a>
-            <a href="#" class="nav-link" onclick="showDashboard()">Feed</a>
+            <a href="#why-quantis" class="nav-link">Why Quantis</a>
+            <a href="#architecture" class="nav-link">Architecture</a>
+            <a href="#" class="nav-link" onclick="showDashboard()">Live Feed</a>
             <a href="/docs" target="_blank" class="nav-link">API Docs ↗</a>
             <a href="https://github.com/atulyasingh-tech/quantis-ai" target="_blank" class="nav-link">GitHub ↗</a>
         </div>
         <button class="nav-btn" onclick="showDashboard()">Get started &rarr;</button>
     </nav>
 
-    <!-- 1. Hero Landing Page View -->
-    <section id="landing-view">
-        <div class="corner-tag tag-top-left"><span>• WHY?</span>multi-signal continuous sensing</div>
-        <div class="corner-tag tag-top-right"><span>• WHAT</span>frontier research & hardware shifts</div>
-        <div class="corner-tag tag-bottom-left"><span>• WHERE</span>autonomous serverless execution</div>
-        <div class="corner-tag tag-bottom-right"><span>• HOW</span>gemini-driven strategic distillation</div>
+    <!-- 1. Landing Page Section -->
+    <div id="landing-view">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="corner-tag tag-top-left"><span>• WHY?</span>multi-signal continuous sensing</div>
+            <div class="corner-tag tag-top-right"><span>• WHAT</span>frontier research & hardware shifts</div>
+            <div class="corner-tag tag-bottom-left"><span>• WHERE</span>autonomous serverless execution</div>
+            <div class="corner-tag tag-bottom-right"><span>• HOW</span>gemini-driven strategic distillation</div>
 
-        <div class="status-badge">
-            <div class="pulse-dot"></div>
-            AUTONOMOUS RESEARCH AGENT • LIVE
-        </div>
+            <div class="status-badge">
+                <div class="pulse-dot"></div>
+                AUTONOMOUS RESEARCH AGENT • LIVE
+            </div>
 
-        <h1 class="hero-title">
-            Quantis tracks <span class="gradient-text">the frontier</span> before it breaks.
-        </h1>
+            <h1 class="hero-title">
+                Quantis tracks <span class="gradient-text">the frontier</span> before it breaks.
+            </h1>
 
-        <p class="hero-subtitle">
-            Autonomous multi-source ingestion, real-time Gemini evaluation, and strategic foresight for next-generation AI architectures, hardware breakthroughs, and frontier ecosystems.
-        </p>
+            <p class="hero-subtitle">
+                Autonomous multi-source ingestion, real-time Gemini evaluation, and strategic foresight for next-generation AI architectures, hardware breakthroughs, and frontier ecosystems.
+            </p>
 
-        <div class="hero-cta-group">
-            <button class="btn-primary" onclick="showDashboard()">Get started free &rarr;</button>
-            <a href="/docs" target="_blank" class="btn-secondary">Explore API Docs ↗</a>
-        </div>
-    </section>
+            <div class="hero-cta-group">
+                <button class="btn-primary" onclick="showDashboard()">Get started free &rarr;</button>
+                <a href="/docs" target="_blank" class="btn-secondary">Explore API Docs ↗</a>
+            </div>
+        </section>
+
+        <!-- Breeth Section 1: Statement Manifesto -->
+        <section class="statement-section" id="why-quantis">
+            <div class="statement-text">
+                Most tech news is just noise. Quantis is <span class="statement-highlight">signal</span>. Rigorous evaluation on every edge, so developers and researchers converge on what truly matters.
+            </div>
+        </section>
+
+        <!-- Breeth Section 2: Bento Architecture Grid -->
+        <section class="bento-section" id="architecture">
+            <div class="section-header">
+                <span class="section-tag">ENGINEERED FOR FRONTIER AGILITY</span>
+                <h2 class="section-h2">Built for engineers who need insight, not marketing hype.</h2>
+            </div>
+
+            <div class="bento-grid">
+                <!-- Large Card 1 -->
+                <div class="bento-card">
+                    <div>
+                        <div class="bento-pill">SIGNAL OVER HYPE</div>
+                        <h3 class="bento-title">Every published insight carries the strategic <span style="color:#c084fc;">why</span>.</h3>
+                        <p class="bento-desc">
+                            Generic aggregators dump raw RSS streams. Quantis parses technical changelogs, open-weights benchmarks, and architecture papers through Google Gemini to distill actual technological shifts from marketing fluff.
+                        </p>
+                    </div>
+                    <div class="bento-code">
+                        // Agent Evaluation Output<br>
+                        "evaluation_verdict": "PUBLISH",<br>
+                        "confidence_score": 0.96,<br>
+                        "signal_layer": "Frontier Architecture & Compute Scaling",<br>
+                        "strategic_impact": "Reduces inference memory footprint by 35% across distributed MoE clusters."
+                    </div>
+                </div>
+
+                <!-- Column Right Cards -->
+                <div class="bento-col-right">
+                    <div class="bento-card">
+                        <div>
+                            <div class="bento-pill">AUTONOMOUS MULTI-FEED INGESTION</div>
+                            <h3 class="bento-title" style="font-size:1.3rem;">ArXiv, TechCrunch, HackerNews & Open Research</h3>
+                            <p class="bento-desc" style="font-size:0.9rem; margin-bottom:0;">
+                                Multi-lane asynchronous web crawlers continuously poll global technology telemetry with zero human intervention required.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bento-card">
+                        <div>
+                            <div class="bento-pill">SERVERLESS ORCHESTRATION</div>
+                            <h3 class="bento-title" style="font-size:1.3rem;">FastAPI, Async SQLite & Vercel Functions</h3>
+                            <p class="bento-desc" style="font-size:0.9rem; margin-bottom:0;">
+                                Built on lightweight, async-first Python architecture. Low-latency edge delivery, automated schema bootstrapping, and interactive OpenAPI swagger specs.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-brand-title">QUANTIS<span style="color:#38bdf8;">.AI</span></div>
+                    <div class="footer-brand-desc">
+                        Autonomous research agent and real-time frontier intelligence discovery engine. Engineered for hackathon innovation and live tech ecosystem evaluation.
+                    </div>
+                </div>
+
+                <div class="footer-authors-block">
+                    <div class="footer-heading">AUTHORS & CORE ARCHITECTS</div>
+                    <a href="https://github.com/atulyasingh-tech" target="_blank" class="author-tag">
+                        <span>• Atulya Kumar Singh</span>
+                        <span class="author-badge">Lead Architect</span>
+                    </a>
+                    <a href="https://github.com/atulyasingh-tech/quantis-ai" target="_blank" class="author-tag">
+                        <span>• Pasumarthy Teja Sai</span>
+                        <span class="author-badge">Core Contributor</span>
+                    </a>
+                </div>
+
+                <div class="footer-authors-block">
+                    <div class="footer-heading">RESOURCES</div>
+                    <a href="#" onclick="showDashboard()" class="author-tag">• Live Command Center</a>
+                    <a href="/docs" target="_blank" class="author-tag">• OpenAPI Swagger Docs ↗</a>
+                    <a href="https://github.com/atulyasingh-tech/quantis-ai" target="_blank" class="author-tag">• GitHub Source Code ↗</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>&copy; 2026 Quantis AI. Distributed under the MIT License.</div>
+                <div>Autonomous Agent • Built with FastAPI & Gemini</div>
+            </div>
+        </footer>
+    </div>
 
     <!-- 2. Command Center Dashboard View -->
     <main id="dashboard-view">
@@ -451,6 +731,7 @@ DASHBOARD_HTML = """
             <div class="dash-actions">
                 <button class="btn-primary" style="padding:10px 22px; font-size:0.85rem;" onclick="initAgent()">1. Trigger Discovery</button>
                 <button class="btn-secondary" style="padding:10px 22px; font-size:0.85rem;" onclick="loadFeed()">2. Refresh Feed</button>
+                <button class="btn-secondary" style="padding:10px 18px; font-size:0.85rem;" onclick="showLanding()">&larr; Back to Overview</button>
             </div>
         </div>
 
@@ -493,11 +774,11 @@ DASHBOARD_HTML = """
     <div id="toast-container"></div>
 
     <script>
-        /* Interactive Star & Particle Canvas Engine */
+        /* High-Intensity, Glowing Particle & Constellation Canvas Engine */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let mouse = { x: null, y: null, radius: 120 };
+        let mouse = { x: null, y: null, radius: 140 };
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -508,27 +789,41 @@ DASHBOARD_HTML = """
         window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
         window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
+        const GLOW_COLORS = ['#38bdf8', '#a855f7', '#c084fc', '#06b6d4', '#4ade80'];
+
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
+                this.size = Math.random() * 2.8 + 1.2;
                 this.baseX = this.x;
                 this.baseY = this.y;
-                this.density = (Math.random() * 20) + 1;
-                this.alpha = Math.random() * 0.6 + 0.2;
-                this.color = Math.random() > 0.6 ? '#a855f7' : '#38bdf8';
+                this.vx = (Math.random() - 0.5) * 0.7;
+                this.vy = (Math.random() - 0.5) * 0.7 - 0.35; // Continuous floating upward drift
+                this.density = (Math.random() * 25) + 2;
+                this.alpha = Math.random() * 0.65 + 0.35;
+                this.color = GLOW_COLORS[Math.floor(Math.random() * GLOW_COLORS.length)];
             }
             draw() {
+                ctx.save();
                 ctx.fillStyle = this.color;
                 ctx.globalAlpha = this.alpha;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 12;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.closePath();
                 ctx.fill();
-                ctx.globalAlpha = 1.0;
+                ctx.restore();
             }
             update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; }
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+
                 if (mouse.x != null) {
                     let dx = mouse.x - this.x;
                     let dy = mouse.y - this.y;
@@ -539,21 +834,14 @@ DASHBOARD_HTML = """
                         const directionY = (dy / distance) * force * this.density;
                         this.x -= directionX;
                         this.y -= directionY;
-                    } else {
-                        if (this.x !== this.baseX) { let dx = this.x - this.baseX; this.x -= dx / 15; }
-                        if (this.y !== this.baseY) { let dy = this.y - this.baseY; this.y -= dy / 15; }
                     }
-                } else {
-                    this.baseY -= 0.15;
-                    if (this.baseY < 0) this.baseY = canvas.height;
-                    this.y = this.baseY;
                 }
             }
         }
 
         function initParticles() {
             particles = [];
-            const count = Math.floor((canvas.width * canvas.height) / 9000);
+            const count = Math.floor((canvas.width * canvas.height) / 7500);
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());
             }
@@ -580,7 +868,7 @@ DASHBOARD_HTML = """
 
         function showLanding() {
             document.getElementById('dashboard-view').style.display = 'none';
-            document.getElementById('landing-view').style.display = 'flex';
+            document.getElementById('landing-view').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
