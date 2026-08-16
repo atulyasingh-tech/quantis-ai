@@ -71,7 +71,7 @@ DASHBOARD_HTML = """
             position: relative;
         }
 
-        /* Particles & Meteor Canvas */
+        /* High-Intensity Interactive Star/Particle & Meteor Canvas */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -96,7 +96,7 @@ DASHBOARD_HTML = """
             filter: blur(50px);
         }
 
-        /* Navbar */
+        /* Top Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -134,7 +134,7 @@ DASHBOARD_HTML = """
         }
         .nav-btn:hover { transform: scale(1.04); box-shadow: 0 0 35px rgba(56, 189, 248, 0.6); }
 
-        /* Landing View */
+        /* Hero Section */
         #landing-view {
             display: flex;
             flex-direction: column;
@@ -254,7 +254,7 @@ DASHBOARD_HTML = """
         }
         .btn-secondary:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: 0 0 25px rgba(56, 189, 248, 0.25); }
 
-        /* Statement & Bento */
+        /* Statement Section */
         .statement-section {
             padding: 90px 24px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -278,6 +278,7 @@ DASHBOARD_HTML = """
             font-weight: 800;
         }
 
+        /* Bento Architecture Grid */
         .bento-section { padding: 100px 24px; }
         .section-header { text-align: left; margin-bottom: 48px; max-width: 1080px; margin-left: auto; margin-right: auto; }
         .section-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #38bdf8; letter-spacing: 1.5px; margin-bottom: 12px; display: block; }
@@ -310,7 +311,7 @@ DASHBOARD_HTML = """
         }
         .bento-col-right { display: flex; flex-direction: column; gap: 24px; }
 
-        /* Command Center (2-Column Bento Grid Feed) */
+        /* Command Center */
         #dashboard-view {
             display: none;
             padding: 105px 40px 60px;
@@ -421,17 +422,22 @@ DASHBOARD_HTML = """
             justify-content: space-between;
         }
         .card-h {
-            font-size: 1.08rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #fff;
             line-height: 1.4;
             margin-bottom: 8px;
         }
         .card-p {
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             color: var(--text-secondary);
-            line-height: 1.55;
+            line-height: 1.5;
             margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .card-footer-action {
             font-size: 0.8rem;
@@ -504,7 +510,7 @@ DASHBOARD_HTML = """
         }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* Modal Overlay Reader with Voice Speech Controls */
+        /* Modal Overlay Reader with Top Action Bar */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: rgba(2, 6, 23, 0.88); backdrop-filter: blur(16px); 
@@ -512,19 +518,24 @@ DASHBOARD_HTML = """
         }
         .modal-content { 
             background: #0b1329; border: 1px solid var(--accent-cyan); border-radius: 16px; 
-            max-width: 660px; width: 94%; max-height: 85vh; overflow-y: auto; padding: 28px; 
+            max-width: 680px; width: 94%; max-height: 88vh; overflow-y: auto; padding: 28px; 
             box-shadow: 0 0 50px rgba(56, 189, 248, 0.35); position: relative; 
         }
-        .modal-close { position: absolute; top: 16px; right: 20px; font-size: 1.5rem; color: var(--text-secondary); cursor: pointer; }
-        .modal-close:hover { color: var(--accent-cyan); }
-        .modal-img { width: 100%; height: 240px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--border-glow); }
-        .modal-title { font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.35; }
-        .modal-body { font-size: 0.94rem; color: #cbd5e1; line-height: 1.65; margin-bottom: 24px; background: rgba(15, 23, 42, 0.6); padding: 18px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05); }
         
-        .modal-btn-area { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        /* Fixed Top Action Bar */
+        .modal-top-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
         .voice-btn {
-            background: rgba(168, 85, 247, 0.2);
-            border: 1px solid rgba(168, 85, 247, 0.5);
+            background: rgba(168, 85, 247, 0.25);
+            border: 1px solid rgba(168, 85, 247, 0.6);
             color: #c084fc;
             padding: 8px 18px;
             border-radius: 9999px;
@@ -536,7 +547,11 @@ DASHBOARD_HTML = """
             gap: 8px;
             transition: all 0.2s;
         }
-        .voice-btn:hover { background: rgba(168, 85, 247, 0.4); color: #fff; }
+        .voice-btn:hover { background: rgba(168, 85, 247, 0.45); color: #fff; }
+
+        .modal-img { width: 100%; height: 230px; object-fit: cover; border-radius: 10px; margin-bottom: 18px; border: 1px solid var(--border-glow); }
+        .modal-title { font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 14px; line-height: 1.35; }
+        .modal-body { font-size: 0.94rem; color: #cbd5e1; line-height: 1.7; background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.06); }
 
         #toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 200; }
         .toast { 
@@ -725,7 +740,7 @@ DASHBOARD_HTML = """
             </div>
         </section>
 
-        <!-- Footer with Authors -->
+        <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-brand">
@@ -813,20 +828,21 @@ DASHBOARD_HTML = """
         </div>
     </main>
 
-    <!-- Modal Reader with Voice SpeechSynthesis (Text-to-Speech) -->
+    <!-- Modal Reader with Top Action Bar -->
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <!-- Top Controls Toolbar -->
+            <div class="modal-top-actions">
+                <button class="voice-btn" id="voice-btn" onclick="toggleVoiceNarration()">🔊 Read Aloud</button>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <a class="btn-primary" style="padding:8px 18px; font-size:0.82rem;" id="modal-link" href="#" target="_blank" rel="noopener noreferrer">Read Original Source &rarr;</a>
+                    <button class="btn-secondary" style="padding:8px 14px; font-size:0.82rem;" onclick="closeModal()">✕ Close</button>
+                </div>
+            </div>
+
             <img class="modal-img" id="modal-img" src="" alt="Thumbnail">
             <div class="modal-title" id="modal-title"></div>
             <div class="modal-body" id="modal-text"></div>
-            <div class="modal-btn-area">
-                <button class="voice-btn" id="voice-btn" onclick="toggleVoiceNarration()">🔊 Read Aloud</button>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn-secondary" style="padding:8px 18px; font-size:0.85rem;" onclick="closeModal()">Close</button>
-                    <a class="btn-primary" style="padding:8px 20px; font-size:0.85rem;" id="modal-link" href="#" target="_blank" rel="noopener noreferrer">Read Original Source &rarr;</a>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -834,7 +850,7 @@ DASHBOARD_HTML = """
     <div id="toast-container"></div>
 
     <script>
-        /* Particles + Shooting Stars Engine */
+        /* Particles & Meteors Engine */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -1064,7 +1080,7 @@ DASHBOARD_HTML = """
                                 <div class="card-h">${post.title || 'AI Frontier Analysis'}</div>
                                 <div class="card-p">${post.text || ''}</div>
                             </div>
-                            <div class="card-footer-action">Read Strategic Breakdown &rarr;</div>
+                            <div class="card-footer-action">Click to Read Full Summary &rarr;</div>
                         </div>
                     `;
                     feed.appendChild(card);
