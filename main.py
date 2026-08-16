@@ -71,7 +71,7 @@ DASHBOARD_HTML = """
             position: relative;
         }
 
-        /* High-Intensity Interactive Star/Particle Canvas */
+        /* High-Intensity Interactive Star/Particle & Meteor Canvas */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -133,9 +133,6 @@ DASHBOARD_HTML = """
             box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
         }
         .nav-btn:hover { transform: scale(1.04); box-shadow: 0 0 35px rgba(56, 189, 248, 0.6); }
-
-        /* Container Layout */
-        .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
 
         /* Hero Section */
         #landing-view {
@@ -203,7 +200,7 @@ DASHBOARD_HTML = """
             margin-bottom: 40px;
         }
 
-        /* Floating Tags */
+        /* Breeth-Style Floating Tags */
         .corner-tag {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
@@ -577,7 +574,7 @@ DASHBOARD_HTML = """
     </style>
 </head>
 <body>
-    <!-- Live Particle Canvas -->
+    <!-- Live Particle & Meteor Canvas -->
     <canvas id="particle-canvas"></canvas>
     <div class="ambient-glow"></div>
 
@@ -626,14 +623,14 @@ DASHBOARD_HTML = """
             </div>
         </section>
 
-        <!-- Breeth Section 1: Statement Manifesto -->
+        <!-- Statement Manifesto -->
         <section class="statement-section" id="why-quantis">
             <div class="statement-text">
                 Most tech news is just noise. Quantis is <span class="statement-highlight">signal</span>. Rigorous evaluation on every edge, so developers and researchers converge on what truly matters.
             </div>
         </section>
 
-        <!-- Breeth Section 2: Bento Architecture Grid -->
+        <!-- Bento Architecture Grid -->
         <section class="bento-section" id="architecture">
             <div class="section-header">
                 <span class="section-tag">ENGINEERED FOR FRONTIER AGILITY</span>
@@ -774,10 +771,11 @@ DASHBOARD_HTML = """
     <div id="toast-container"></div>
 
     <script>
-        /* High-Intensity, Glowing Particle & Constellation Canvas Engine */
+        /* High-Intensity Glowing Particles + Shooting Stars (Meteors) Engine */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
+        let meteors = [];
         let mouse = { x: null, y: null, radius: 140 };
 
         function resizeCanvas() {
@@ -839,20 +837,86 @@ DASHBOARD_HTML = """
             }
         }
 
+        class Meteor {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width * 1.2;
+                this.y = Math.random() * -100;
+                this.length = Math.random() * 120 + 80;
+                this.speed = Math.random() * 9 + 12;
+                this.size = Math.random() * 1.8 + 1;
+                this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.2; // ~45 deg diagonal
+                this.alpha = 1;
+                this.color = Math.random() > 0.4 ? '#38bdf8' : '#c084fc';
+                this.active = true;
+            }
+            draw() {
+                if (!this.active) return;
+                ctx.save();
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 18;
+                
+                const tailX = this.x - Math.cos(this.angle) * this.length;
+                const tailY = this.y - Math.sin(this.angle) * this.length;
+
+                const grad = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                grad.addColorStop(0, '#ffffff');
+                grad.addColorStop(0.3, this.color);
+                grad.addColorStop(1, 'rgba(3, 7, 18, 0)');
+
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = this.size;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.stroke();
+                ctx.restore();
+            }
+            update() {
+                if (!this.active) return;
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+
+                if (this.x > canvas.width + 200 || this.y > canvas.height + 200) {
+                    this.active = false;
+                    setTimeout(() => this.reset(), Math.random() * 4000 + 2000);
+                }
+            }
+        }
+
         function initParticles() {
             particles = [];
             const count = Math.floor((canvas.width * canvas.height) / 7500);
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());
             }
+
+            meteors = [];
+            for (let i = 0; i < 3; i++) {
+                const m = new Meteor();
+                m.active = false;
+                setTimeout(() => m.reset(), i * 2500 + 1000);
+                meteors.push(m);
+            }
         }
 
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw & Update Particles
             for (let i = 0; i < particles.length; i++) {
                 particles[i].draw();
                 particles[i].update();
             }
+
+            // Draw & Update Meteors / Shooting Stars
+            for (let i = 0; i < meteors.length; i++) {
+                meteors[i].draw();
+                meteors[i].update();
+            }
+
             requestAnimationFrame(animateParticles);
         }
         resizeCanvas();
