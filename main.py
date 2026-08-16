@@ -71,7 +71,6 @@ DASHBOARD_HTML = """
             position: relative;
         }
 
-        /* High-Intensity Interactive Star/Particle & Meteor Canvas */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -96,7 +95,7 @@ DASHBOARD_HTML = """
             filter: blur(50px);
         }
 
-        /* Top Navbar */
+        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -134,7 +133,7 @@ DASHBOARD_HTML = """
         }
         .nav-btn:hover { transform: scale(1.04); box-shadow: 0 0 35px rgba(56, 189, 248, 0.6); }
 
-        /* Hero Section */
+        /* Landing View */
         #landing-view {
             display: flex;
             flex-direction: column;
@@ -254,7 +253,7 @@ DASHBOARD_HTML = """
         }
         .btn-secondary:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: 0 0 25px rgba(56, 189, 248, 0.25); }
 
-        /* Statement Section */
+        /* Statement & Bento */
         .statement-section {
             padding: 90px 24px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -278,7 +277,6 @@ DASHBOARD_HTML = """
             font-weight: 800;
         }
 
-        /* Bento Architecture Grid */
         .bento-section { padding: 100px 24px; }
         .section-header { text-align: left; margin-bottom: 48px; max-width: 1080px; margin-left: auto; margin-right: auto; }
         .section-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #38bdf8; letter-spacing: 1.5px; margin-bottom: 12px; display: block; }
@@ -510,7 +508,7 @@ DASHBOARD_HTML = """
         }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* Modal Overlay Reader with Top Action Bar */
+        /* Modal Overlay Reader */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: rgba(2, 6, 23, 0.88); backdrop-filter: blur(16px); 
@@ -522,7 +520,6 @@ DASHBOARD_HTML = """
             box-shadow: 0 0 50px rgba(56, 189, 248, 0.35); position: relative; 
         }
         
-        /* Fixed Top Action Bar */
         .modal-top-actions {
             display: flex;
             justify-content: space-between;
@@ -794,7 +791,7 @@ DASHBOARD_HTML = """
         <div class="metrics-grid">
             <div class="metric-card"><div class="metric-label">TOPICS DISCOVERED</div><div class="metric-val">128</div></div>
             <div class="metric-card"><div class="metric-label">TOPICS EVALUATED</div><div class="metric-val">94</div></div>
-            <div class="metric-card"><div class="metric-label">POSTS PUBLISHED</div><div class="metric-val" id="published-count">10</div></div>
+            <div class="metric-card"><div class="metric-label">POSTS PUBLISHED</div><div class="metric-val" id="published-count">20</div></div>
             <div class="metric-card"><div class="metric-label">TOPICS REJECTED</div><div class="metric-val">86</div></div>
             <div class="metric-card"><div class="metric-label">MEMORY NODES</div><div class="metric-val">312</div></div>
         </div>
@@ -831,7 +828,6 @@ DASHBOARD_HTML = """
     <!-- Modal Reader with Top Action Bar -->
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
-            <!-- Top Controls Toolbar -->
             <div class="modal-top-actions">
                 <button class="voice-btn" id="voice-btn" onclick="toggleVoiceNarration()">🔊 Read Aloud</button>
                 <div style="display:flex; gap:10px; align-items:center;">
@@ -850,7 +846,6 @@ DASHBOARD_HTML = """
     <div id="toast-container"></div>
 
     <script>
-        /* Particles & Meteors Engine */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -991,7 +986,6 @@ DASHBOARD_HTML = """
         resizeCanvas();
         animateParticles();
 
-        /* View Switcher */
         function showDashboard() {
             document.getElementById('landing-view').style.display = 'none';
             document.getElementById('dashboard-view').style.display = 'block';
@@ -1036,7 +1030,7 @@ DASHBOARD_HTML = """
                 const data = await res.json();
                 document.getElementById('status-text').innerHTML = `<span class='pulse-dot'></span> ${data.message || "Discovery pass completed."}`;
                 updateActivityLog("Evaluated multi-source feeds & updated database.");
-                showToast("10 frontier insights loaded successfully!");
+                showToast("20 frontier insights loaded successfully!");
                 setTimeout(loadFeed, 1000);
             } catch(e) {
                 document.getElementById('status-text').innerHTML = "<span class='pulse-dot' style='background:#f87171;'></span> Error initializing agent.";
@@ -1085,7 +1079,7 @@ DASHBOARD_HTML = """
                     `;
                     feed.appendChild(card);
                 });
-                updateActivityLog("Loaded published posts into 2-Column Bento Grid.");
+                updateActivityLog("Loaded 20 published posts into Bento Grid.");
             } catch(e) {
                 document.getElementById('status-text').innerText = "Error loading feed.";
             }
