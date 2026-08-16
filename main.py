@@ -309,11 +309,11 @@ DASHBOARD_HTML = """
         }
         .bento-col-right { display: flex; flex-direction: column; gap: 24px; }
 
-        /* Command Center */
+        /* Full-Width Spacious Command Center */
         #dashboard-view {
             display: none;
-            padding: 105px 40px 60px;
-            max-width: 1480px;
+            padding: 105px 48px 60px;
+            max-width: 1560px;
             margin: 0 auto;
             position: relative;
             z-index: 10;
@@ -338,8 +338,8 @@ DASHBOARD_HTML = """
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
-            margin-bottom: 32px;
+            gap: 18px;
+            margin-bottom: 34px;
         }
         .metric-card {
             background: var(--card-bg);
@@ -351,17 +351,12 @@ DASHBOARD_HTML = """
         .metric-label { font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.5px; }
         .metric-val { font-size: 1.85rem; font-weight: 800; color: #fff; margin-top: 6px; }
 
-        .workspace-split {
-            display: grid;
-            grid-template-columns: 2.3fr 1fr;
-            gap: 28px;
-            align-items: start;
-        }
-
+        /* Full-Width Responsive Bento Grid Feed */
         .bento-feed-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+            width: 100%;
         }
 
         .feed-card {
@@ -385,7 +380,7 @@ DASHBOARD_HTML = """
         .card-banner-wrap {
             position: relative;
             width: 100%;
-            height: 155px;
+            height: 165px;
             overflow: hidden;
             background: #020617;
         }
@@ -413,24 +408,24 @@ DASHBOARD_HTML = """
         }
 
         .card-body {
-            padding: 20px;
+            padding: 22px;
             display: flex;
             flex-direction: column;
             flex: 1;
             justify-content: space-between;
         }
         .card-h {
-            font-size: 1.05rem;
+            font-size: 1.08rem;
             font-weight: 700;
             color: #fff;
             line-height: 1.4;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .card-p {
-            font-size: 0.84rem;
+            font-size: 0.86rem;
             color: var(--text-secondary);
-            line-height: 1.5;
-            margin-bottom: 16px;
+            line-height: 1.55;
+            margin-bottom: 18px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -438,7 +433,7 @@ DASHBOARD_HTML = """
             text-overflow: ellipsis;
         }
         .card-footer-action {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: var(--accent-cyan);
             font-weight: 700;
             display: flex;
@@ -446,59 +441,23 @@ DASHBOARD_HTML = """
             gap: 6px;
         }
 
-        .sidebar-telemetry-dock {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            position: sticky;
-            top: 96px;
-        }
-
-        .telemetry-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-glow);
-            border-radius: 14px;
-            padding: 24px;
-            backdrop-filter: blur(12px);
-        }
-        .telemetry-title {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            margin-bottom: 18px;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .telemetry-list { display: flex; flex-direction: column; gap: 14px; }
-        .telemetry-item {
-            font-size: 0.82rem;
-            color: #cbd5e1;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 10px;
-        }
-        .time-tag { color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
-
         /* Skeleton Loaders */
         .skeleton-bento {
             background: rgba(15, 23, 42, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 14px;
             overflow: hidden;
-            height: 290px;
+            height: 310px;
             display: flex;
             flex-direction: column;
         }
         .skeleton-banner {
-            height: 155px;
+            height: 165px;
             background: linear-gradient(90deg, #0f172a 25%, #1e293b 50%, #0f172a 75%);
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
         }
-        .skeleton-content { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+        .skeleton-content { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
         .skeleton-line {
             height: 14px;
             border-radius: 4px;
@@ -620,8 +579,6 @@ DASHBOARD_HTML = """
         }
 
         @media (max-width: 1120px) {
-            .workspace-split { grid-template-columns: 1fr; }
-            .sidebar-telemetry-dock { position: static; }
             .metrics-grid { grid-template-columns: repeat(3, 1fr); }
             .corner-tag { display: none; }
         }
@@ -630,7 +587,7 @@ DASHBOARD_HTML = """
             .navbar { padding: 0 20px; }
             .nav-links { display: none; }
             .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-            #dashboard-view { padding: 90px 16px 40px; }
+            #dashboard-view { padding: 90px 20px 40px; }
             .footer { padding: 40px 20px 30px; }
         }
     </style>
@@ -774,7 +731,7 @@ DASHBOARD_HTML = """
         </footer>
     </div>
 
-    <!-- Command Center View -->
+    <!-- Command Center View (Full Width Exploration) -->
     <main id="dashboard-view">
         <div class="dashboard-header">
             <div>
@@ -796,32 +753,11 @@ DASHBOARD_HTML = """
             <div class="metric-card"><div class="metric-label">MEMORY NODES</div><div class="metric-val">312</div></div>
         </div>
 
-        <div class="workspace-split">
-            <div class="bento-feed-grid" id="feed">
-                <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:70%;"></div><div class="skeleton-line" style="width:90%;"></div><div class="skeleton-line" style="width:60%;"></div></div></div>
-                <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:80%;"></div><div class="skeleton-line" style="width:85%;"></div><div class="skeleton-line" style="width:50%;"></div></div></div>
-                <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:60%;"></div><div class="skeleton-line" style="width:95%;"></div><div class="skeleton-line" style="width:70%;"></div></div></div>
-                <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:75%;"></div><div class="skeleton-line" style="width:80%;"></div><div class="skeleton-line" style="width:40%;"></div></div></div>
-            </div>
-
-            <div class="sidebar-telemetry-dock">
-                <div class="telemetry-card">
-                    <div class="telemetry-title">
-                        <span>AGENT TELEMETRY STREAM</span>
-                        <span style="font-size:0.7rem; color:#4ade80;">● ACTIVE</span>
-                    </div>
-                    <div class="telemetry-list" id="activity-log"></div>
-                </div>
-
-                <div class="telemetry-card">
-                    <div class="telemetry-title">STRATEGIC DOMAINS</div>
-                    <div style="display:flex; flex-direction:column; gap:10px; font-size:0.8rem; color:#94a3b8;">
-                        <div style="display:flex; justify-content:space-between;"><span>Models & Agents</span><span style="color:#38bdf8; font-weight:700;">45%</span></div>
-                        <div style="display:flex; justify-content:space-between;"><span>Hardware Scaling</span><span style="color:#c084fc; font-weight:700;">30%</span></div>
-                        <div style="display:flex; justify-content:space-between;"><span>Infra & MoE Routing</span><span style="color:#4ade80; font-weight:700;">25%</span></div>
-                    </div>
-                </div>
-            </div>
+        <!-- Full-Width Responsive Feed Grid -->
+        <div class="bento-feed-grid" id="feed">
+            <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:70%;"></div><div class="skeleton-line" style="width:90%;"></div><div class="skeleton-line" style="width:60%;"></div></div></div>
+            <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:80%;"></div><div class="skeleton-line" style="width:85%;"></div><div class="skeleton-line" style="width:50%;"></div></div></div>
+            <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:60%;"></div><div class="skeleton-line" style="width:95%;"></div><div class="skeleton-line" style="width:70%;"></div></div></div>
         </div>
     </main>
 
@@ -1010,26 +946,13 @@ DASHBOARD_HTML = """
             }
         }
 
-        function updateActivityLog(msg) {
-            const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            const log = document.getElementById('activity-log');
-            if (log) {
-                const item = document.createElement('div');
-                item.className = 'timeline-item';
-                item.innerHTML = `<span class="time-tag">${timeStr}</span> ${msg}`;
-                log.prepend(item);
-            }
-        }
-
         async function initAgent() {
             document.getElementById('status-text').innerHTML = "<span class='pulse-dot'></span> Scanning global RSS feeds & evaluating signals...";
-            updateActivityLog("Running global RSS discovery...");
             showToast("Discovery Engine Activated across global feeds...");
             try {
                 const res = await fetch('/api/agent/init', { method: 'POST' });
                 const data = await res.json();
                 document.getElementById('status-text').innerHTML = `<span class='pulse-dot'></span> ${data.message || "Discovery pass completed."}`;
-                updateActivityLog("Evaluated multi-source feeds & updated database.");
                 showToast("20 frontier insights loaded successfully!");
                 setTimeout(loadFeed, 1000);
             } catch(e) {
@@ -1050,7 +973,7 @@ DASHBOARD_HTML = """
                 document.getElementById('published-count').innerText = data.total ?? posts.length;
 
                 if (posts.length === 0) {
-                    feed.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:40px; grid-column:span 2;">No posts yet. Click Trigger Discovery above.</div>';
+                    feed.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:40px; grid-column:1/-1;">No posts yet. Click Trigger Discovery above.</div>';
                     return;
                 }
 
@@ -1079,7 +1002,6 @@ DASHBOARD_HTML = """
                     `;
                     feed.appendChild(card);
                 });
-                updateActivityLog("Loaded 20 published posts into Bento Grid.");
             } catch(e) {
                 document.getElementById('status-text').innerText = "Error loading feed.";
             }
@@ -1137,8 +1059,6 @@ DASHBOARD_HTML = """
             const btn = document.getElementById('voice-btn');
             if (btn) btn.innerHTML = '🔊 Read Aloud';
         }
-
-        updateActivityLog("System online.");
     </script>
 </body>
 </html>
