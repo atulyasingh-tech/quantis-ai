@@ -1,48 +1,75 @@
 import httpx
-import time
 import xml.etree.ElementTree as ET
-from typing import List, Dict
+import html
+import re
 
-RSS_FEEDS = [
-    "https://techcrunch.com/category/artificial-intelligence/feed/",
-    "https://news.ycombinator.com/rss",
-    "https://rss.arxiv.org/rss/cs.AI"
+GLOBAL_FEEDS = [
+    {"source": "TechCrunch AI", "url": "https://techcrunch.com/category/artificial-intelligence/feed/"},
+    {"source": "VentureBeat AI", "url": "https://venturebeat.com/category/ai/feed/"},
+    {"source": "Ars Technica Tech", "url": "https://feeds.arstechnica.com/arstechnica/technology-lab"},
+    {"source": "ArXiv AI Research", "url": "https://export.arxiv.org/rss/cs.AI"},
+    {"source": "The Verge AI", "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"},
+    {"source": "MIT Tech Review", "url": "https://www.technologyreview.com/feed/"}
 ]
 
-async def fetch_latest_news() -> List[Dict[str, str]]:
-    results = []
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Cache-Control": "no-cache"
-    }
+def clean_text(text: str) -> str:
+    if not text:
+        return ""
+    text = re.sub(r'<[^>]+>', '', text)
+    text = html.unescape(text)
+    text = re.sub(r'\s+', ' ', text)
+    return text.strip()
+
+async def fetch_latest_news():
+    articles = []
     
-    timestamp = int(time.time())
-    
-    try:
-        async with httpx.AsyncClient(timeout=4.0, follow_redirects=True, headers=headers) as client:
-            for feed in RSS_FEEDS:
-                try:
-                    resp = await client.get(f"{feed}?t={timestamp}")
-                    if resp.status_code == 200:
-                        root = ET.fromstring(resp.text)
-                        for item in root.findall(".//item")[:4]:
-                            title = item.findtext("title") or ""
-                            link = item.findtext("link") or ""
-                            desc = item.findtext("description") or ""
-                            
-                            if "<" in desc and ">" in desc:
-                                import re
-                                desc = re.sub('<[^<]+?>', '', desc)
-                                
-                            if title:
-                                results.append({
-                                    "title": title.strip(),
-                                    "link": link.strip(),
-                                    "summary": desc.strip()
-                                })
-                except Exception:
-                    continue
-    except Exception:
-        pass
-                
-    return results
+    async with httpx.AsyncClient(timeout=4.0, follow_redirects=True, headers={"User-Agent": "QuantisAI/1.0"}) as client:
+        for feed in GLOBAL_FEEDS:
+            try:
+                res = await client.get(feed["url"])
+                if res.status_code == 200:
+                    root = ET.fromstring(res.content)
+                    
+                    # Handles standard RSS 2.0
+                    items = root.findall('.//item')
+                    # Handles Atom feeds
+                    if not items:
+                        items = root.findall('.//{http://www.w3.org/2005/Atom}entry')
+                    
+                    for item in items[:4]:
+                        title = ""
+                        link = ""
+                        summary = ""
+                        
+                        # RSS
+                        t_elem = item.find('title')
+                        l_elem = item.find('link')
+                        d_elem = item.find('description')
+                        
+                        # Atom fallback
+                        if t_elem is None:
+                            t_elem = item.find('{http://www.w3.org/2005/Atom}title')
+                        if l_elem is None:
+                            l_elem = item.find('{http://www.w3.org/2005/Atom}link')
+                        if d_elem is None:
+                            d_elem = item.find('{http://www.w3.org/2005/Atom}summary')
+
+                        if t_elem is not None and t_elem.text:
+                            title = clean_text(t_elem.text)
+                        
+                        if l_elem is not None:
+                            link = l_elem.text or l_elem.attrib.get('href', '')
+                        
+                        if d_elem is not None and d_elem.text:
+                            summary = clean_text(d_elem.text)
+                        
+                        if title and len(title) > 10:
+                            articles.append({
+                                "title": title,
+                                "link": link or "https://techcrunch.com/",
+                                "summary": summary if summary else f"Strategic technology coverage reported via {feed['source']}."
+                            })
+            except Exception:
+                continue
+
+    return articles
