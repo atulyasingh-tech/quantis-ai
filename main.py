@@ -71,7 +71,7 @@ DASHBOARD_HTML = """
             position: relative;
         }
 
-        /* High-Intensity Interactive Star/Particle & Meteor Canvas */
+        /* Particles & Meteor Canvas */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -96,7 +96,7 @@ DASHBOARD_HTML = """
             filter: blur(50px);
         }
 
-        /* Top Navbar */
+        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -134,7 +134,7 @@ DASHBOARD_HTML = """
         }
         .nav-btn:hover { transform: scale(1.04); box-shadow: 0 0 35px rgba(56, 189, 248, 0.6); }
 
-        /* Hero Section */
+        /* Landing View */
         #landing-view {
             display: flex;
             flex-direction: column;
@@ -249,11 +249,12 @@ DASHBOARD_HTML = """
             font-size: 0.95rem;
             font-weight: 600;
             text-decoration: none;
+            cursor: pointer;
             transition: all 0.3s;
         }
         .btn-secondary:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: 0 0 25px rgba(56, 189, 248, 0.25); }
 
-        /* Statement Section */
+        /* Statement & Bento */
         .statement-section {
             padding: 90px 24px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -277,7 +278,6 @@ DASHBOARD_HTML = """
             font-weight: 800;
         }
 
-        /* Bento Architecture Grid */
         .bento-section { padding: 100px 24px; }
         .section-header { text-align: left; margin-bottom: 48px; max-width: 1080px; margin-left: auto; margin-right: auto; }
         .section-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #38bdf8; letter-spacing: 1.5px; margin-bottom: 12px; display: block; }
@@ -310,9 +310,7 @@ DASHBOARD_HTML = """
         }
         .bento-col-right { display: flex; flex-direction: column; gap: 24px; }
 
-        /* ========================================================================= */
-        /* OPTION B: COMMAND CENTER DASHBOARD (2-COLUMN BENTO GRID + TELEMETRY DOCK) */
-        /* ========================================================================= */
+        /* Command Center (2-Column Bento Grid Feed) */
         #dashboard-view {
             display: none;
             padding: 105px 40px 60px;
@@ -338,7 +336,6 @@ DASHBOARD_HTML = """
         .dash-sub { color: var(--accent-cyan); font-size: 0.92rem; margin-top: 4px; display: flex; align-items: center; gap: 8px; }
         .dash-actions { display: flex; gap: 12px; }
 
-        /* Metrics Ribbon */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -351,13 +348,10 @@ DASHBOARD_HTML = """
             border-radius: 14px;
             padding: 20px;
             backdrop-filter: blur(12px);
-            transition: all 0.2s;
         }
-        .metric-card:hover { border-color: var(--accent-cyan); }
         .metric-label { font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.5px; }
         .metric-val { font-size: 1.85rem; font-weight: 800; color: #fff; margin-top: 6px; }
 
-        /* Main Workspace Split (70% Grid / 30% Telemetry) */
         .workspace-split {
             display: grid;
             grid-template-columns: 2.3fr 1fr;
@@ -365,7 +359,6 @@ DASHBOARD_HTML = """
             align-items: start;
         }
 
-        /* 2-Column Bento Feed Grid */
         .bento-feed-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -393,7 +386,7 @@ DASHBOARD_HTML = """
         .card-banner-wrap {
             position: relative;
             width: 100%;
-            height: 150px;
+            height: 155px;
             overflow: hidden;
             background: #020617;
         }
@@ -418,20 +411,6 @@ DASHBOARD_HTML = """
             color: #38bdf8;
             font-weight: 700;
             backdrop-filter: blur(6px);
-        }
-
-        .card-score {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(168, 85, 247, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.68rem;
-            color: #fff;
-            font-weight: 700;
         }
 
         .card-body {
@@ -463,7 +442,6 @@ DASHBOARD_HTML = """
             gap: 6px;
         }
 
-        /* Right Sidebar Telemetry Stream */
         .sidebar-telemetry-dock {
             display: flex;
             flex-direction: column;
@@ -511,7 +489,7 @@ DASHBOARD_HTML = """
             flex-direction: column;
         }
         .skeleton-banner {
-            height: 150px;
+            height: 155px;
             background: linear-gradient(90deg, #0f172a 25%, #1e293b 50%, #0f172a 75%);
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
@@ -526,7 +504,7 @@ DASHBOARD_HTML = """
         }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* Modal Overlay Reader */
+        /* Modal Overlay Reader with Voice Speech Controls */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: rgba(2, 6, 23, 0.88); backdrop-filter: blur(16px); 
@@ -534,15 +512,31 @@ DASHBOARD_HTML = """
         }
         .modal-content { 
             background: #0b1329; border: 1px solid var(--accent-cyan); border-radius: 16px; 
-            max-width: 640px; width: 94%; max-height: 85vh; overflow-y: auto; padding: 28px; 
+            max-width: 660px; width: 94%; max-height: 85vh; overflow-y: auto; padding: 28px; 
             box-shadow: 0 0 50px rgba(56, 189, 248, 0.35); position: relative; 
         }
         .modal-close { position: absolute; top: 16px; right: 20px; font-size: 1.5rem; color: var(--text-secondary); cursor: pointer; }
         .modal-close:hover { color: var(--accent-cyan); }
-        .modal-img { width: 100%; height: 230px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--border-glow); }
+        .modal-img { width: 100%; height: 240px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--border-glow); }
         .modal-title { font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.35; }
-        .modal-body { font-size: 0.92rem; color: #cbd5e1; line-height: 1.65; margin-bottom: 24px; }
-        .modal-btn-area { display: flex; justify-content: flex-end; gap: 12px; }
+        .modal-body { font-size: 0.94rem; color: #cbd5e1; line-height: 1.65; margin-bottom: 24px; background: rgba(15, 23, 42, 0.6); padding: 18px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        .modal-btn-area { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .voice-btn {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            color: #c084fc;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .voice-btn:hover { background: rgba(168, 85, 247, 0.4); color: #fff; }
 
         #toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 200; }
         .toast { 
@@ -556,7 +550,7 @@ DASHBOARD_HTML = """
             animation: fadeIn 0.3s ease; 
         }
 
-        /* Footer Section */
+        /* Footer */
         .footer {
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             background: rgba(2, 6, 23, 0.92);
@@ -613,7 +607,6 @@ DASHBOARD_HTML = """
             color: var(--text-muted);
         }
 
-        /* Responsive Breakpoints */
         @media (max-width: 1120px) {
             .workspace-split { grid-template-columns: 1fr; }
             .sidebar-telemetry-dock { position: static; }
@@ -631,11 +624,10 @@ DASHBOARD_HTML = """
     </style>
 </head>
 <body>
-    <!-- Live Particle & Meteor Canvas -->
     <canvas id="particle-canvas"></canvas>
     <div class="ambient-glow"></div>
 
-    <!-- Navigation Bar -->
+    <!-- Navigation -->
     <nav class="navbar">
         <a href="#" class="nav-brand" onclick="showLanding()">
             <img class="nav-logo" src="https://raw.githubusercontent.com/atulyasingh-tech/quantis-ai/main/quantislogo.jpeg" alt="Logo">
@@ -652,9 +644,8 @@ DASHBOARD_HTML = """
         <button class="nav-btn" onclick="showDashboard()">Start Reading News &rarr;</button>
     </nav>
 
-    <!-- 1. Landing Page Section -->
+    <!-- Landing View -->
     <div id="landing-view">
-        <!-- Hero Section -->
         <section class="hero-section">
             <div class="corner-tag tag-top-left"><span>• WHY?</span>multi-signal continuous sensing</div>
             <div class="corner-tag tag-top-right"><span>• WHAT</span>frontier research & hardware shifts</div>
@@ -680,14 +671,12 @@ DASHBOARD_HTML = """
             </div>
         </section>
 
-        <!-- Statement Manifesto -->
         <section class="statement-section" id="why-quantis">
             <div class="statement-text">
                 Most tech news is just noise. Quantis is <span class="statement-highlight">signal</span>. Rigorous evaluation on every edge, so developers and researchers converge on what truly matters.
             </div>
         </section>
 
-        <!-- Bento Architecture Grid -->
         <section class="bento-section" id="architecture">
             <div class="section-header">
                 <span class="section-tag">ENGINEERED FOR FRONTIER AGILITY</span>
@@ -736,7 +725,7 @@ DASHBOARD_HTML = """
             </div>
         </section>
 
-        <!-- Footer -->
+        <!-- Footer with Authors -->
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-brand">
@@ -773,7 +762,7 @@ DASHBOARD_HTML = """
         </footer>
     </div>
 
-    <!-- 2. Command Center Dashboard View (Option B: Bento Grid) -->
+    <!-- Command Center View -->
     <main id="dashboard-view">
         <div class="dashboard-header">
             <div>
@@ -796,7 +785,6 @@ DASHBOARD_HTML = """
         </div>
 
         <div class="workspace-split">
-            <!-- 2-Column Bento Feed Grid -->
             <div class="bento-feed-grid" id="feed">
                 <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:70%;"></div><div class="skeleton-line" style="width:90%;"></div><div class="skeleton-line" style="width:60%;"></div></div></div>
                 <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:80%;"></div><div class="skeleton-line" style="width:85%;"></div><div class="skeleton-line" style="width:50%;"></div></div></div>
@@ -804,7 +792,6 @@ DASHBOARD_HTML = """
                 <div class="skeleton-bento"><div class="skeleton-banner"></div><div class="skeleton-content"><div class="skeleton-line" style="width:75%;"></div><div class="skeleton-line" style="width:80%;"></div><div class="skeleton-line" style="width:40%;"></div></div></div>
             </div>
 
-            <!-- Telemetry Sidebar -->
             <div class="sidebar-telemetry-dock">
                 <div class="telemetry-card">
                     <div class="telemetry-title">
@@ -826,7 +813,7 @@ DASHBOARD_HTML = """
         </div>
     </main>
 
-    <!-- Modal Reader -->
+    <!-- Modal Reader with Voice SpeechSynthesis (Text-to-Speech) -->
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -834,8 +821,11 @@ DASHBOARD_HTML = """
             <div class="modal-title" id="modal-title"></div>
             <div class="modal-body" id="modal-text"></div>
             <div class="modal-btn-area">
-                <button class="btn-secondary" style="padding:8px 18px; font-size:0.85rem;" onclick="closeModal()">Close</button>
-                <a class="btn-primary" style="padding:8px 20px; font-size:0.85rem;" id="modal-link" href="#" target="_blank" rel="noopener noreferrer">Read Original Source &rarr;</a>
+                <button class="voice-btn" id="voice-btn" onclick="toggleVoiceNarration()">🔊 Read Aloud</button>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-secondary" style="padding:8px 18px; font-size:0.85rem;" onclick="closeModal()">Close</button>
+                    <a class="btn-primary" style="padding:8px 20px; font-size:0.85rem;" id="modal-link" href="#" target="_blank" rel="noopener noreferrer">Read Original Source &rarr;</a>
+                </div>
             </div>
         </div>
     </div>
@@ -844,7 +834,7 @@ DASHBOARD_HTML = """
     <div id="toast-container"></div>
 
     <script>
-        /* High-Intensity Glowing Particles + Shooting Stars Engine */
+        /* Particles + Shooting Stars Engine */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -985,7 +975,7 @@ DASHBOARD_HTML = """
         resizeCanvas();
         animateParticles();
 
-        /* View Switching Logic */
+        /* View Switcher */
         function showDashboard() {
             document.getElementById('landing-view').style.display = 'none';
             document.getElementById('dashboard-view').style.display = 'block';
@@ -1022,15 +1012,15 @@ DASHBOARD_HTML = """
         }
 
         async function initAgent() {
-            document.getElementById('status-text').innerHTML = "<span class='pulse-dot'></span> Scanning live RSS feeds & evaluating signals...";
-            updateActivityLog("Running RSS news discovery...");
-            showToast("Discovery Engine Activated...");
+            document.getElementById('status-text').innerHTML = "<span class='pulse-dot'></span> Scanning global RSS feeds & evaluating signals...";
+            updateActivityLog("Running global RSS discovery...");
+            showToast("Discovery Engine Activated across global feeds...");
             try {
                 const res = await fetch('/api/agent/init', { method: 'POST' });
                 const data = await res.json();
                 document.getElementById('status-text').innerHTML = `<span class='pulse-dot'></span> ${data.message || "Discovery pass completed."}`;
-                updateActivityLog("Evaluated RSS feeds & updated database.");
-                showToast("New insights processed successfully!");
+                updateActivityLog("Evaluated multi-source feeds & updated database.");
+                showToast("10 frontier insights loaded successfully!");
                 setTimeout(loadFeed, 1000);
             } catch(e) {
                 document.getElementById('status-text').innerHTML = "<span class='pulse-dot' style='background:#f87171;'></span> Error initializing agent.";
@@ -1058,18 +1048,16 @@ DASHBOARD_HTML = """
                 posts.forEach((post, index) => {
                     const sources = Array.isArray(post.sources) ? post.sources : [];
                     const originalUrl = sources[0] || 'https://techcrunch.com/category/artificial-intelligence/';
-                    const imgUrl = sources[1] || 'https://image.pollinations.ai/prompt/ai%20technology?width=400&height=300';
+                    const imgUrl = sources[1] || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80';
                     const category = CATEGORIES[index % CATEGORIES.length];
-                    const score = Math.floor((post.confidenceScore || 0.95) * 100);
 
                     const card = document.createElement('div');
                     card.className = 'feed-card';
                     card.onclick = () => openModal(post.title, post.text, imgUrl, originalUrl);
                     card.innerHTML = `
                         <div class="card-banner-wrap">
-                            <img class="card-thumb" src="${imgUrl}" alt="Thumbnail" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400'">
+                            <img class="card-thumb" src="${imgUrl}" alt="Thumbnail" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800'">
                             <div class="card-badge">${category}</div>
-                            <div class="card-score">${score}% SIGNAL</div>
                         </div>
                         <div class="card-body">
                             <div>
@@ -1087,7 +1075,11 @@ DASHBOARD_HTML = """
             }
         }
 
+        let isSpeaking = false;
+        let currentUtterance = null;
+
         function openModal(title, text, imgUrl, sourceUrl) {
+            stopVoice();
             document.getElementById('modal-title').innerText = title || 'Insight Details';
             document.getElementById('modal-text').innerText = text || '';
             document.getElementById('modal-img').src = imgUrl;
@@ -1096,7 +1088,44 @@ DASHBOARD_HTML = """
         }
 
         function closeModal() {
+            stopVoice();
             document.getElementById('modal').style.display = 'none';
+        }
+
+        function toggleVoiceNarration() {
+            const btn = document.getElementById('voice-btn');
+            const textToRead = document.getElementById('modal-title').innerText + ". " + document.getElementById('modal-text').innerText;
+
+            if (isSpeaking) {
+                stopVoice();
+            } else {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    currentUtterance = new SpeechSynthesisUtterance(textToRead);
+                    currentUtterance.rate = 1.0;
+                    currentUtterance.pitch = 1.0;
+                    
+                    currentUtterance.onend = () => {
+                        isSpeaking = false;
+                        btn.innerHTML = '🔊 Read Aloud';
+                    };
+
+                    window.speechSynthesis.speak(currentUtterance);
+                    isSpeaking = true;
+                    btn.innerHTML = '⏹ Stop Voice';
+                } else {
+                    showToast("Speech synthesis not supported in this browser.");
+                }
+            }
+        }
+
+        function stopVoice() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            isSpeaking = false;
+            const btn = document.getElementById('voice-btn');
+            if (btn) btn.innerHTML = '🔊 Read Aloud';
         }
 
         updateActivityLog("System online.");
